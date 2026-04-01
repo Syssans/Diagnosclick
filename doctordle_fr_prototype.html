@@ -1,0 +1,286 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+#app { max-width: 640px; margin: 0 auto; padding: 1.5rem 1rem; }
+.header { text-align: center; margin-bottom: 1.5rem; }
+.header h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); letter-spacing: 0.05em; }
+.header p { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
+.tries { display: flex; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
+.try-dot { width: 28px; height: 28px; border-radius: 50%; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--color-text-secondary); transition: background 0.2s; }
+.try-dot.used { background: #E24B4A; border-color: #A32D2D; color: #FCEBEB; }
+.try-dot.current { border-color: var(--color-border-primary); background: var(--color-background-primary); color: var(--color-text-primary); }
+.try-dot.correct { background: #639922; border-color: #3B6D11; color: #EAF3DE; }
+.indices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
+.indice-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 0.9rem 1.1rem; }
+.indice-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.indice-tag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 99px; }
+.tag-anamnese { background: #E6F1FB; color: #0C447C; }
+.tag-clinique { background: #E1F5EE; color: #085041; }
+.tag-paraclinique { background: #FAEEDA; color: #633806; }
+.tag-image { background: #EEEDFE; color: #3C3489; }
+.indice-num { font-size: 11px; color: var(--color-text-tertiary); }
+.indice-text { font-size: 14px; color: var(--color-text-primary); line-height: 1.6; }
+.indice-image { width: 100%; border-radius: var(--border-radius-md); margin-top: 8px; background: var(--color-background-secondary); height: 160px; display: flex; align-items: center; justify-content: center; border: 0.5px solid var(--color-border-tertiary); }
+.indice-image span { font-size: 12px; color: var(--color-text-secondary); }
+.indice-locked { display: flex; align-items: center; gap: 8px; }
+.indice-locked-card { background: var(--color-background-secondary); border: 0.5px dashed var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 0.75rem 1.1rem; display: flex; align-items: center; gap: 8px; }
+.lock-icon { width: 14px; height: 14px; opacity: 0.35; }
+.indice-locked-text { font-size: 13px; color: var(--color-text-tertiary); }
+.input-zone { position: relative; }
+.input-row { display: flex; gap: 8px; }
+.diag-input { flex: 1; font-size: 14px; padding: 0 12px; height: 40px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); outline: none; }
+.diag-input:focus { border-color: var(--color-border-primary); box-shadow: 0 0 0 2px rgba(0,0,0,0.06); }
+.btn-valider { height: 40px; padding: 0 16px; font-size: 13px; font-weight: 500; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); cursor: pointer; white-space: nowrap; }
+.btn-valider:hover { background: var(--color-background-secondary); }
+.btn-valider:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-passer { height: 40px; padding: 0 12px; font-size: 13px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: transparent; color: var(--color-text-secondary); cursor: pointer; }
+.btn-passer:hover { background: var(--color-background-secondary); }
+.dropdown { position: absolute; top: 44px; left: 0; right: 56px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); z-index: 10; overflow: hidden; }
+.dropdown-item { padding: 9px 12px; font-size: 14px; color: var(--color-text-primary); cursor: pointer; }
+.dropdown-item:hover { background: var(--color-background-secondary); }
+.feedback { margin-top: 10px; padding: 10px 14px; border-radius: var(--border-radius-md); font-size: 13px; }
+.feedback.wrong { background: #FCEBEB; color: #791F1F; border: 0.5px solid #F7C1C1; }
+.feedback.correct { background: #EAF3DE; color: #27500A; border: 0.5px solid #C0DD97; }
+.feedback.reveal { background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); }
+.result-banner { text-align: center; padding: 1.5rem; background: var(--color-background-secondary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); margin-top: 1rem; }
+.result-banner h2 { font-size: 18px; font-weight: 500; margin-bottom: 6px; }
+.result-banner p { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 12px; }
+.btn-partager { font-size: 13px; padding: 8px 16px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); cursor: pointer; }
+.btn-partager:hover { background: var(--color-background-secondary); }
+.share-text { font-size: 12px; color: var(--color-text-secondary); margin-top: 8px; }
+</style>
+<html>
+  <head></head>
+  <body>
+<div id="app">
+  <div class="header">
+    <h1>Diagnostdle</h1>
+    <p>Trouvez le diagnostic en 6 indices — <span id="date-label"></span></p>
+  </div>
+
+  <div class="tries" id="tries-row"></div>
+  <div class="indices" id="indices-container"></div>
+
+  <div class="input-zone" id="input-zone">
+    <div class="input-row">
+      <input class="diag-input" id="diag-input" type="text" placeholder="Entrez un diagnostic..." autocomplete="off" />
+      <button class="btn-passer" id="btn-passer">Passer</button>
+      <button class="btn-valider" id="btn-valider">Valider</button>
+    </div>
+    <div class="dropdown" id="dropdown" style="display:none;"></div>
+    <div id="feedback"></div>
+  </div>
+
+  <div id="result-zone"></div>
+</div></body>
+</html>
+<script>
+
+const DIAGNOSTICS = [
+  "Embolie pulmonaire","Pneumothorax spontané","Pneumonie franche lobaire aiguë","Péricardite aiguë","Infarctus du myocarde","Dissection aortique","Pleurésie","Tamponnade","Angor instable","Épanchement péricardique","Insuffisance cardiaque aiguë","Exacerbation de BPCO","Crise d'asthme","Pneumopathie interstitielle","Endocardite infectieuse"
+];
+
+let essaiActuel = 0;
+let indicesVisibles = 1;
+let termine = false;
+let inputValue = "";
+
+const MAX_ESSAIS = 6;
+
+let CAS = null;
+
+async function chargerCas() {
+  const res = await fetch('./data/diagnostdle_cardio_batch1.json');
+  const data = await res.json();
+
+  
+  CAS = transformerCas(data[Math.floor(Math.random() * data.length)]);
+
+  renderTries();
+  renderIndices();
+  console.log(data);
+  console.log(CAS);
+}
+
+function transformerCas(raw) {
+  return {
+    diagnostic: raw.diagnostic,
+    indices: raw.indices
+      .sort((a, b) => a.ordre - b.ordre)
+      .map(ind => ({
+        type: ind.type,
+        text: ind.texte,
+        hasImage: ind.image !== null,
+        imageLabel: ind.image ? ind.image : null
+      }))
+  };
+}
+
+function getDateLabel() {
+  const d = new Date();
+  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function renderTries() {
+  const row = document.getElementById('tries-row');
+  row.innerHTML = '';
+  for (let i = 0; i < MAX_ESSAIS; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'try-dot';
+    if (i < essaiActuel) dot.classList.add('used');
+    else if (i === essaiActuel) dot.classList.add('current');
+    dot.textContent = i + 1;
+    row.appendChild(dot);
+  }
+}
+
+function getTag(type) {
+  const map = { anamnese: 'tag-anamnese', clinique: 'tag-clinique', paraclinique: 'tag-paraclinique', image: 'tag-image' };
+  const labels = { anamnese: 'Anamnèse', clinique: 'Clinique', paraclinique: 'Paraclinique', image: 'Imagerie' };
+  return { cls: map[type] || 'tag-anamnese', label: labels[type] || type };
+}
+
+function renderIndices() {
+  if (!CAS) return;
+  const container = document.getElementById('indices-container');
+  container.innerHTML = '';
+  for (let i = 0; i < CAS.indices.length; i++) {
+    const ind = CAS.indices[i];
+    if (i < indicesVisibles) {
+      const tag = getTag(ind.type);
+      const card = document.createElement('div');
+      card.className = 'indice-card';
+      let imageHTML = '';
+      if (ind.hasImage) {
+        imageHTML = `<div class="indice-image"><span>${ind.imageLabel} — image à intégrer</span></div>`;
+      }
+      card.innerHTML = `
+        <div class="indice-header">
+          <span class="indice-tag ${tag.cls}">${tag.label}</span>
+          <span class="indice-num">Indice ${i + 1}</span>
+        </div>
+        <div class="indice-text">${ind.text}</div>
+        ${imageHTML}
+      `;
+      container.appendChild(card);
+    } else {
+      const locked = document.createElement('div');
+      locked.className = 'indice-locked-card';
+      locked.innerHTML = `<svg class="lock-icon" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.2"/></svg><span class="indice-locked-text">Indice ${i + 1} — validez ou passez pour déverrouiller</span>`;
+      container.appendChild(locked);
+    }
+  }
+}
+
+function filterDiagnostics(query) {
+  if (!query || query.length < 2) return [];
+  const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  return DIAGNOSTICS.filter(d => {
+    const dn = d.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return dn.includes(q);
+  }).slice(0, 6);
+}
+
+function showDropdown(items) {
+  const dd = document.getElementById('dropdown');
+  if (!items.length) { dd.style.display = 'none'; return; }
+  dd.innerHTML = '';
+  items.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'dropdown-item';
+    el.textContent = item;
+    el.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      document.getElementById('diag-input').value = item;
+      inputValue = item;
+      dd.style.display = 'none';
+    });
+    dd.appendChild(el);
+  });
+  dd.style.display = 'block';
+}
+
+function avancer() {
+  if (indicesVisibles < CAS.indices.length) indicesVisibles++;
+}
+
+function terminer(succes) {
+  termine = true;
+  document.getElementById('input-zone').style.display = 'none';
+  const tries = document.getElementById('tries-row');
+  const dots = tries.querySelectorAll('.try-dot');
+  if (succes && dots[essaiActuel]) {
+    dots[essaiActuel].classList.remove('current');
+    dots[essaiActuel].classList.add('correct');
+  }
+  indicesVisibles = CAS.indices.length;
+  renderIndices();
+
+  const emoji = Array.from({length: MAX_ESSAIS}, (_, i) => i < essaiActuel ? '🟥' : i === essaiActuel && succes ? '🟩' : '⬜').join('');
+  const zone = document.getElementById('result-zone');
+  zone.innerHTML = `
+    <div class="result-banner">
+      <h2>${succes ? 'Bravo !' : 'Raté pour aujourd\'hui'}</h2>
+      <p>${succes ? `Diagnostic trouvé en ${essaiActuel + 1} essai${essaiActuel > 0 ? 's' : ''}.` : `Le diagnostic était : <strong>${CAS.diagnostic}</strong>`}</p>
+      <button class="btn-partager" id="btn-partager">Partager mon résultat</button>
+      <div class="share-text" id="share-text" style="display:none;">Diagnostdle — ${getDateLabel()}<br>${emoji}<br>Copié !</div>
+    </div>
+  `;
+  document.getElementById('btn-partager').addEventListener('click', () => {
+    const txt = `Diagnostdle — ${getDateLabel()}\n${emoji}\nhttps://diagnostdle.fr`;
+    navigator.clipboard.writeText(txt).catch(()=>{});
+    document.getElementById('share-text').style.display = 'block';
+  });
+}
+
+function valider() {
+  const val = document.getElementById('diag-input').value.trim();
+  if (!val) return;
+  document.getElementById('dropdown').style.display = 'none';
+  const fb = document.getElementById('feedback');
+  const correct = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === CAS.diagnostic.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  if (correct) {
+    fb.innerHTML = `<div class="feedback correct">Exact ! Le diagnostic est bien <strong>${CAS.diagnostic}</strong>.</div>`;
+    terminer(true);
+    return;
+  }
+  fb.innerHTML = `<div class="feedback wrong">Ce n'est pas le bon diagnostic. Prochain indice déverrouillé.</div>`;
+  document.getElementById('diag-input').value = '';
+  inputValue = '';
+  essaiActuel++;
+  if (essaiActuel >= MAX_ESSAIS) { terminer(false); return; }
+  avancer();
+  renderTries();
+  renderIndices();
+}
+
+function passer() {
+  const fb = document.getElementById('feedback');
+  fb.innerHTML = `<div class="feedback reveal">Essai passé. Prochain indice déverrouillé.</div>`;
+  document.getElementById('diag-input').value = '';
+  document.getElementById('dropdown').style.display = 'none';
+  essaiActuel++;
+  if (essaiActuel >= MAX_ESSAIS) { terminer(false); return; }
+  avancer();
+  renderTries();
+  renderIndices();
+}
+
+document.getElementById('date-label').textContent = getDateLabel();
+
+document.getElementById('diag-input').addEventListener('input', e => {
+  inputValue = e.target.value;
+  showDropdown(filterDiagnostics(inputValue));
+});
+document.getElementById('diag-input').addEventListener('blur', () => {
+  setTimeout(() => { document.getElementById('dropdown').style.display = 'none'; }, 120);
+});
+document.getElementById('diag-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') valider();
+});
+document.getElementById('btn-valider').addEventListener('click', valider);
+document.getElementById('btn-passer').addEventListener('click', passer);
+
+chargerCas();
+</script>
