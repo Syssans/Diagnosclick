@@ -157,8 +157,22 @@ body { font-family: var(--font-sans); }
 </html>
 <script>
 
-const DIAGNOSTICS = [
-  "Embolie pulmonaire","Pneumothorax spontané","Pneumonie franche lobaire aiguë","Péricardite aiguë","Infarctus du myocarde","Dissection aortique","Pleurésie","Tamponnade","Angor instable","Épanchement péricardique","Insuffisance cardiaque aiguë","Exacerbation de BPCO","Crise d'asthme","Pneumopathie interstitielle","Endocardite infectieuse"
+let DIAGNOSTICS = [
+  "Embolie pulmonaire",
+  "Pneumothorax spontané",
+  "Pneumonie franche lobaire aiguë",
+  "Péricardite aiguë",
+  "Infarctus du myocarde",
+  "Dissection aortique",
+  "Pleurésie",
+  "Tamponnade",
+  "Angor instable",
+  "Épanchement péricardique",
+  "Insuffisance cardiaque aiguë",
+  "Exacerbation de BPCO",
+  "Crise d'asthme",
+  "Pneumopathie interstitielle",
+  "Endocardite infectieuse"
 ];
 
 let essaiActuel = 0;
@@ -174,6 +188,9 @@ async function chargerCas() {
   const res = await fetch('./diagnostick_database.json');
   const data = await res.json();
 
+  const jsonDiagnostics = data.map(cas => cas.diagnostic);
+
+  DIAGNOSTICS = [...new Set([...DIAGNOSTICS, ...jsonDiagnostics])];
   
   CAS = transformerCas(data[Math.floor(Math.random() * data.length)]);
 
