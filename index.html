@@ -1,384 +1,555 @@
-
-<style>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnostick</title>
+  <meta name="description" content="Trouvez le diagnostic médical en 6 indices. Un nouveau cas chaque jour." />
+  <style>
     :root {
-    --color-background-primary: light-dark(rgba(255, 255, 255, 1), rgba(48, 48, 46, 1));
-    --color-background-secondary: light-dark(rgba(245, 244, 237, 1), rgba(38, 38, 36, 1));
-    --color-background-tertiary: light-dark(rgba(250, 249, 245, 1), rgba(20, 20, 19, 1));
-    --color-background-inverse: light-dark(rgba(20, 20, 19, 1), rgba(250, 249, 245, 1));
-    --color-background-ghost: light-dark(rgba(255, 255, 255, 0), rgba(48, 48, 46, 0));
-    --color-background-info: light-dark(rgba(214, 228, 246, 1), rgba(37, 62, 95, 1));
-    --color-background-danger: light-dark(rgba(247, 236, 236, 1), rgba(96, 42, 40, 1));
-    --color-background-success: light-dark(rgba(233, 241, 220, 1), rgba(27, 70, 20, 1));
-    --color-background-warning: light-dark(rgba(246, 238, 223, 1), rgba(72, 58, 15, 1));
-    --color-background-disabled: light-dark(rgba(255, 255, 255, 0.5), rgba(48, 48, 46, 0.5));
-    --color-text-primary: light-dark(rgba(20, 20, 19, 1), rgba(250, 249, 245, 1));
-    --color-text-secondary: light-dark(rgba(61, 61, 58, 1), rgba(194, 192, 182, 1));
-    --color-text-tertiary: light-dark(rgba(115, 114, 108, 1), rgba(156, 154, 146, 1));
-    --color-text-inverse: light-dark(rgba(255, 255, 255, 1), rgba(20, 20, 19, 1));
-    --color-text-info: light-dark(rgba(50, 102, 173, 1), rgba(128, 170, 221, 1));
-    --color-text-danger: light-dark(rgba(127, 44, 40, 1), rgba(238, 136, 132, 1));
-    --color-text-success: light-dark(rgba(38, 91, 25, 1), rgba(122, 185, 72, 1));
-    --color-text-warning: light-dark(rgba(90, 72, 21, 1), rgba(209, 160, 65, 1));
-    --color-text-disabled: light-dark(rgba(20, 20, 19, 0.5), rgba(250, 249, 245, 0.5));
-    --color-text-ghost: light-dark(rgba(115, 114, 108, 0.5), rgba(156, 154, 146, 0.5));
-    --color-border-primary: light-dark(rgba(31, 30, 29, 0.4), rgba(222, 220, 209, 0.4));
-    --color-border-secondary: light-dark(rgba(31, 30, 29, 0.3), rgba(222, 220, 209, 0.3));
-    --color-border-tertiary: light-dark(rgba(31, 30, 29, 0.15), rgba(222, 220, 209, 0.15));
-    --color-border-inverse: light-dark(rgba(255, 255, 255, 0.3), rgba(20, 20, 19, 0.15));
-    --color-border-ghost: light-dark(rgba(31, 30, 29, 0), rgba(222, 220, 209, 0));
-    --color-border-info: light-dark(rgba(70, 130, 213, 1), rgba(70, 130, 213, 1));
-    --color-border-danger: light-dark(rgba(167, 61, 57, 1), rgba(205, 92, 88, 1));
-    --color-border-success: light-dark(rgba(67, 116, 38, 1), rgba(89, 145, 48, 1));
-    --color-border-warning: light-dark(rgba(128, 92, 31, 1), rgba(168, 120, 41, 1));
-    --color-border-disabled: light-dark(rgba(31, 30, 29, 0.1), rgba(222, 220, 209, 0.1));
-    --color-ring-primary: light-dark(rgba(20, 20, 19, 0.7), rgba(250, 249, 245, 0.7));
-    --color-ring-secondary: light-dark(rgba(61, 61, 58, 0.7), rgba(194, 192, 182, 0.7));
-    --color-ring-inverse: light-dark(rgba(255, 255, 255, 0.7), rgba(20, 20, 19, 0.7));
-    --color-ring-info: light-dark(rgba(50, 102, 173, 0.5), rgba(128, 170, 221, 0.5));
-    --color-ring-danger: light-dark(rgba(167, 61, 57, 0.5), rgba(205, 92, 88, 0.5));
-    --color-ring-success: light-dark(rgba(67, 116, 38, 0.5), rgba(89, 145, 48, 0.5));
-    --color-ring-warning: light-dark(rgba(128, 92, 31, 0.5), rgba(168, 120, 41, 0.5));
-    --font-sans: Anthropic Sans, sans-serif;
-    --font-mono: ui-monospace, monospace;
-    --font-weight-normal: 400;
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
-    --font-weight-bold: 700;
-    --font-text-xs-size: 12px;
-    --font-text-sm-size: 14px;
-    --font-text-md-size: 16px;
-    --font-text-lg-size: 20px;
-    --font-heading-xs-size: 12px;
-    --font-heading-sm-size: 14px;
-    --font-heading-md-size: 16px;
-    --font-heading-lg-size: 20px;
-    --font-heading-xl-size: 24px;
-    --font-heading-2xl-size: 28px;
-    --font-heading-3xl-size: 36px;
-    --font-text-xs-line-height: 1.4;
-    --font-text-sm-line-height: 1.4;
-    --font-text-md-line-height: 1.4;
-    --font-text-lg-line-height: 1.25;
-    --font-heading-xs-line-height: 1.4;
-    --font-heading-sm-line-height: 1.4;
-    --font-heading-md-line-height: 1.4;
-    --font-heading-lg-line-height: 1.25;
-    --font-heading-xl-line-height: 1.25;
-    --font-heading-2xl-line-height: 1.1;
-    --font-heading-3xl-line-height: 1;
-    --border-radius-xs: 4px;
-    --border-radius-sm: 6px;
-    --border-radius-md: 8px;
-    --border-radius-lg: 10px;
-    --border-radius-xl: 12px;
-    --border-radius-full: 9999px;
-    --border-width-regular: 0.5px;
-    --shadow-hairline: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-    color-scheme: light dark;
-    --font-serif: "Anthropic Serif", Georgia, "Times New Roman", serif;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font-sans); }
-#app { max-width: 640px; margin: 0 auto; padding: 1.5rem 1rem; }
-.header { text-align: center; margin-bottom: 1.5rem; }
-.footlegal { text-align: center; margin-bottom: 1.5rem; }
-.footlegal p { font-size: 11px; color: var(--color-text-secondary); margin-top: 15px; }
-.header h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); letter-spacing: 0.05em; }
-.header p { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
-.tries { display: flex; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
-.try-dot { width: 28px; height: 28px; border-radius: 50%; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-secondary); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: var(--color-text-secondary); transition: background 0.2s; }
-.try-dot.used { background: #E24B4A; border-color: #A32D2D; color: #FCEBEB; }
-.try-dot.current { border-color: var(--color-border-primary); background: var(--color-background-primary); color: var(--color-text-primary); }
-.try-dot.correct { background: #639922; border-color: #3B6D11; color: #EAF3DE; }
-.indices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
-.indice-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 0.9rem 1.1rem; }
-.indice-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-.indice-tag { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 99px; }
-.tag-anamnese { background: #E6F1FB; color: #0C447C; }
-.tag-clinique { background: #E1F5EE; color: #085041; }
-.tag-paraclinique { background: #FAEEDA; color: #633806; }
-.tag-image { background: #EEEDFE; color: #3C3489; }
-.indice-num { font-size: 11px; color: var(--color-text-tertiary); }
-.indice-text { font-size: 14px; color: var(--color-text-primary); line-height: 1.6; }
-.indice-image { width: 100%; border-radius: var(--border-radius-md); margin-top: 8px; background: var(--color-background-secondary); height: 160px; display: flex; align-items: center; justify-content: center; border: 0.5px solid var(--color-border-tertiary); }
-.indice-image span { font-size: 12px; color: var(--color-text-secondary); }
-.indice-locked { display: flex; align-items: center; gap: 8px; }
-.indice-locked-card { background: var(--color-background-secondary); border: 0.5px dashed var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 0.75rem 1.1rem; display: flex; align-items: center; gap: 8px; }
-.lock-icon { width: 14px; height: 14px; opacity: 0.35; }
-.indice-locked-text { font-size: 13px; color: var(--color-text-tertiary); }
-.input-zone { position: relative; }
-.input-row { display: flex; gap: 8px; }
-.diag-input { flex: 1; font-size: 14px; padding: 0 12px; height: 40px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); outline: none; }
-.diag-input:focus { border-color: var(--color-border-primary); box-shadow: 0 0 0 2px rgba(0,0,0,0.06); }
-.btn-valider { height: 40px; padding: 0 16px; font-size: 13px; font-weight: 500; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); cursor: pointer; white-space: nowrap; }
-.btn-valider:hover { background: var(--color-background-secondary); }
-.btn-valider:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn-passer { height: 40px; padding: 0 12px; font-size: 13px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); background: transparent; color: var(--color-text-secondary); cursor: pointer; }
-.btn-passer:hover { background: var(--color-background-secondary); }
-.dropdown { position: absolute; top: 44px; left: 0; right: 56px; background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); z-index: 10; overflow: hidden; }
-.dropdown-item { padding: 9px 12px; font-size: 14px; color: var(--color-text-primary); cursor: pointer; }
-.dropdown-item:hover { background: var(--color-background-secondary); }
-.feedback { margin-top: 10px; padding: 10px 14px; border-radius: var(--border-radius-md); font-size: 13px; }
-.feedback.wrong { background: #FCEBEB; color: #791F1F; border: 0.5px solid #F7C1C1; }
-.feedback.correct { background: #EAF3DE; color: #27500A; border: 0.5px solid #C0DD97; }
-.feedback.reveal { background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); }
-.result-banner { text-align: center; padding: 1.5rem; background: var(--color-background-secondary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); margin-top: 1rem; }
-.result-banner h2 { font-size: 18px; font-weight: 500; margin-bottom: 6px; }
-.result-banner p { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 12px; }
-.btn-partager { font-size: 13px; padding: 8px 16px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); cursor: pointer; }
-.btn-partager:hover { background: var(--color-background-secondary); }
-.share-text { font-size: 12px; color: var(--color-text-secondary); margin-top: 8px; }
-</style>
-<html>
-  <head></head>
-  <body>
-      <title>Diagnostick</title>
+      --bg-primary: #1a1a18;
+      --bg-secondary: #242422;
+      --bg-tertiary: #2e2e2c;
+      --text-primary: #f5f4ee;
+      --text-secondary: #a8a69a;
+      --text-tertiary: #6e6c64;
+      --border-subtle: rgba(222, 220, 209, 0.12);
+      --border-mid: rgba(222, 220, 209, 0.25);
+      --border-strong: rgba(222, 220, 209, 0.4);
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-full: 9999px;
+      --tag-anamnese-bg: rgba(37, 62, 95, 0.7);
+      --tag-anamnese-text: #80aadd;
+      --tag-clinique-bg: rgba(27, 70, 20, 0.7);
+      --tag-clinique-text: #7ab948;
+      --tag-paraclinique-bg: rgba(72, 58, 15, 0.7);
+      --tag-paraclinique-text: #d1a041;
+      --tag-image-bg: rgba(55, 45, 90, 0.7);
+      --tag-image-text: #afa9ec;
+      --green: #4a7a1a;
+      --green-light: #c0dd97;
+      --green-bg: rgba(27, 70, 20, 0.4);
+      --red: #a32d2d;
+      --red-light: #f7c1c1;
+      --red-bg: rgba(96, 42, 40, 0.4);
+      --neutral-bg: rgba(38, 38, 36, 0.8);
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f5f4ed;
+        --bg-tertiary: #eeede6;
+        --text-primary: #14140f;
+        --text-secondary: #3d3d3a;
+        --text-tertiary: #73726c;
+        --border-subtle: rgba(31, 30, 29, 0.1);
+        --border-mid: rgba(31, 30, 29, 0.2);
+        --border-strong: rgba(31, 30, 29, 0.35);
+        --tag-anamnese-bg: #d6e4f6;
+        --tag-anamnese-text: #0c447c;
+        --tag-clinique-bg: #d4edda;
+        --tag-clinique-text: #085041;
+        --tag-paraclinique-bg: #faeeda;
+        --tag-paraclinique-text: #633806;
+        --tag-image-bg: #eeedfe;
+        --tag-image-text: #3c3489;
+        --green: #3b6d11;
+        --green-light: #639922;
+        --green-bg: #eaf3de;
+        --red: #791f1f;
+        --red-light: #a32d2d;
+        --red-bg: #fcebeb;
+        --neutral-bg: #f5f4ed;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+    #app { max-width: 620px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+
+    .header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 0.5px solid var(--border-subtle); }
+    .header h1 { font-size: 28px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .header-sub { font-size: 13px; color: var(--text-tertiary); margin-top: 5px; }
+    .header-nav { margin-top: 10px; }
+    .header-nav a { font-size: 12px; color: var(--text-tertiary); text-decoration: none; border: 0.5px solid var(--border-subtle); border-radius: var(--radius-full); padding: 3px 10px; transition: all 0.1s; }
+    .header-nav a:hover { color: var(--text-secondary); border-color: var(--border-mid); }
+    .header-stats { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; }
+    .stat { text-align: center; }
+    .stat-value { font-size: 18px; font-weight: 600; }
+    .stat-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .tries { display: flex; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
+    .try-dot { width: 30px; height: 30px; border-radius: 50%; border: 0.5px solid var(--border-mid); background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--text-tertiary); transition: all 0.15s; }
+    .try-dot.used { background: var(--red-bg); border-color: var(--red); color: var(--red-light); }
+    .try-dot.current { border-color: var(--border-strong); background: var(--bg-tertiary); color: var(--text-primary); }
+    .try-dot.correct { background: var(--green-bg); border-color: var(--green); color: var(--green-light); }
+
+    .indices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
+    .indice-card { background: var(--bg-secondary); border: 0.5px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 0.9rem 1.1rem; animation: fadeSlide 0.2s ease; }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .indice-header { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .indice-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 0.04em; }
+    .tag-anamnese { background: var(--tag-anamnese-bg); color: var(--tag-anamnese-text); }
+    .tag-clinique { background: var(--tag-clinique-bg); color: var(--tag-clinique-text); }
+    .tag-paraclinique { background: var(--tag-paraclinique-bg); color: var(--tag-paraclinique-text); }
+    .tag-image { background: var(--tag-image-bg); color: var(--tag-image-text); }
+    .indice-num { font-size: 11px; color: var(--text-tertiary); }
+    .indice-text { font-size: 14px; line-height: 1.65; }
+    .indice-image { width: 100%; border-radius: var(--radius-md); margin-top: 10px; background: var(--bg-tertiary); height: 180px; display: flex; align-items: center; justify-content: center; border: 0.5px solid var(--border-subtle); }
+    .indice-image img { max-width: 100%; max-height: 100%; border-radius: var(--radius-md); object-fit: contain; }
+    .indice-image span { font-size: 12px; color: var(--text-tertiary); }
+    .indice-locked-card { background: var(--bg-secondary); border: 0.5px dashed var(--border-subtle); border-radius: var(--radius-lg); padding: 0.7rem 1.1rem; display: flex; align-items: center; gap: 8px; opacity: 0.6; }
+    .indice-locked-text { font-size: 13px; color: var(--text-tertiary); }
+    .lock-icon { width: 12px; height: 12px; opacity: 0.3; flex-shrink: 0; }
+
+    .input-zone { position: relative; background: var(--bg-secondary); border: 0.5px solid var(--border-mid); border-radius: var(--radius-lg); padding: 0.9rem; }
+    .input-row { display: flex; gap: 8px; }
+    .diag-input { flex: 1; font-size: 14px; padding: 0 12px; height: 38px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); outline: none; font-family: inherit; }
+    .diag-input::placeholder { color: var(--text-tertiary); }
+    .diag-input:focus { border-color: var(--border-strong); }
+    .btn-valider { height: 38px; padding: 0 16px; font-size: 13px; font-weight: 600; border-radius: var(--radius-md); border: 0.5px solid var(--border-strong); background: var(--text-primary); color: var(--bg-primary); cursor: pointer; white-space: nowrap; font-family: inherit; transition: opacity 0.1s; }
+    .btn-valider:hover { opacity: 0.85; }
+    .btn-valider:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn-passer { height: 38px; padding: 0 12px; font-size: 13px; border-radius: var(--radius-md); border: 0.5px solid var(--border-subtle); background: transparent; color: var(--text-secondary); cursor: pointer; font-family: inherit; transition: background 0.1s; }
+    .btn-passer:hover { background: var(--bg-tertiary); }
+    .dropdown { position: absolute; top: calc(0.9rem + 38px + 8px); left: 0.9rem; right: 0.9rem; background: var(--bg-primary); border: 0.5px solid var(--border-mid); border-radius: var(--radius-md); z-index: 10; overflow: hidden; }
+    .dropdown-item { padding: 9px 12px; font-size: 14px; color: var(--text-primary); cursor: pointer; font-family: inherit; }
+    .dropdown-item:hover { background: var(--bg-secondary); }
+    .feedback { margin-top: 8px; padding: 8px 12px; border-radius: var(--radius-md); font-size: 13px; line-height: 1.5; }
+    .feedback.wrong { background: var(--red-bg); color: var(--red-light); border: 0.5px solid var(--red); }
+    .feedback.correct { background: var(--green-bg); color: var(--green-light); border: 0.5px solid var(--green); }
+    .feedback.reveal { background: var(--neutral-bg); color: var(--text-secondary); border: 0.5px solid var(--border-subtle); }
+
+    /* RÉSULTAT */
+    .result-banner { text-align: center; padding: 1.75rem; background: var(--bg-secondary); border-radius: var(--radius-lg); border: 0.5px solid var(--border-subtle); margin-top: 1rem; }
+    .result-banner h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .result-banner p { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.6; }
+    .result-emoji { font-size: 18px; letter-spacing: 3px; margin-bottom: 14px; }
+    .countdown-block { margin: 14px 0; }
+    .countdown-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+    .countdown-time { font-size: 24px; font-weight: 700; letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
+    .result-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+    .btn-partager { font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); cursor: pointer; font-family: inherit; transition: background 0.1s; }
+    .btn-partager:hover { background: var(--bg-tertiary); }
+    .btn-archives-link { font-size: 13px; padding: 8px 18px; border-radius: var(--radius-md); border: 0.5px solid var(--border-subtle); background: transparent; color: var(--text-secondary); cursor: pointer; font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; transition: background 0.1s; }
+    .btn-archives-link:hover { background: var(--bg-tertiary); }
+    .share-confirm { font-size: 12px; color: var(--text-tertiary); margin-top: 8px; }
+
+    /* DÉJÀ JOUÉ */
+    .deja-joue { text-align: center; padding: 2rem 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-lg); border: 0.5px solid var(--border-subtle); }
+    .deja-joue h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .deja-joue p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 6px; }
+
+    .footer { text-align: center; margin-top: 2.5rem; padding-top: 1.25rem; border-top: 0.5px solid var(--border-subtle); }
+    .footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
+    .footer a { color: var(--text-tertiary); text-decoration: none; }
+    .footer a:hover { color: var(--text-secondary); }
+  </style>
+</head>
+<body>
 <div id="app">
   <div class="header">
     <h1>Diagnostick</h1>
-    <p>Trouvez le diagnostic en 6 indices — <span id="date-label"></span></p>
+    <p class="header-sub">Trouvez le diagnostic en 6 indices — <span id="date-label"></span></p>
+    <div class="header-nav">
+      <a href="./archives.html">Archives</a>
+    </div>
+    <div class="header-stats">
+      <div class="stat"><div class="stat-value" id="stat-joues">0</div><div class="stat-label">Joués</div></div>
+      <div class="stat"><div class="stat-value" id="stat-reussis">0%</div><div class="stat-label">Réussite</div></div>
+      <div class="stat"><div class="stat-value" id="stat-streak">0</div><div class="stat-label">Série</div></div>
+    </div>
   </div>
 
-  <div class="tries" id="tries-row"></div>
-  <div class="indices" id="indices-container"></div>
-
-  <div class="input-zone" id="input-zone">
-    <div class="input-row">
-      <input class="diag-input" id="diag-input" type="text" placeholder="Entrez un diagnostic..." autocomplete="off" />
-      <button class="btn-passer" id="btn-passer">Passer</button>
-      <button class="btn-valider" id="btn-valider">Valider</button>
+  <div id="game-container">
+    <div class="tries" id="tries-row"></div>
+    <div class="indices" id="indices-container"></div>
+    <div class="input-zone" id="input-zone">
+      <div class="input-row">
+        <input class="diag-input" id="diag-input" type="text" placeholder="Entrez un diagnostic..." autocomplete="off" />
+        <button class="btn-passer" id="btn-passer">Passer</button>
+        <button class="btn-valider" id="btn-valider">Valider</button>
+      </div>
+      <div class="dropdown" id="dropdown" style="display:none;"></div>
+      <div id="feedback"></div>
     </div>
-    <div class="dropdown" id="dropdown" style="display:none;"></div>
-    <div id="feedback"></div>
+    <div id="result-zone"></div>
   </div>
 
-  <div id="result-zone"></div>
-    <div class="footlegal">
-        <p>Diagnostick est un service de divertissement inspiré de Doctordle.org. Il ne se substitue en aucun cas à un avis médical.</p>
-        <p>@Syssans</p>
-    </div>
-</div></body>
-</html>
+  <div class="footer">
+    <p>Diagnostick est un service de divertissement inspiré de <a href="https://doctordle.org" target="_blank">Doctordle.org</a>.<br>Il ne se substitue en aucun cas à un avis médical professionnel.</p>
+    <p style="margin-top: 6px;"><a href="https://github.com/syssans" target="_blank">@Syssans</a></p>
+  </div>
+</div>
+
 <script>
+  let DIAGNOSTICS = [
+    "Embolie pulmonaire","Pneumothorax spontané","Pneumonie franche lobaire aiguë",
+    "Pleurésie","Angor instable","Épanchement péricardique","Exacerbation de BPCO",
+    "Crise d'asthme","Pneumopathie interstitielle"
+  ];
 
-let DIAGNOSTICS = [
-  "Embolie pulmonaire",
-  "Pneumothorax spontané",
-  "Pneumonie franche lobaire aiguë",
-  "Pleurésie",
-  "Angor instable",
-  "Épanchement péricardique",
-  "Exacerbation de BPCO",
-  "Crise d'asthme",
-  "Pneumopathie interstitielle",
-];
+  let CAS = null;
+  let essaiActuel = 0;
+  let indicesVisibles = 1;
+  let termine = false;
+  let countdownInterval = null;
+  const MAX_ESSAIS = 6;
 
-let essaiActuel = 0;
-let indicesVisibles = 1;
-let termine = false;
-let inputValue = "";
+  // ── CLÉS LOCALSTORAGE ────────────────────────────────────────────────────
+  const KEY_STATS   = 'diagnostick_stats';
+  const KEY_SESSION = 'diagnostick_session';
 
-const MAX_ESSAIS = 6;
+  // ── DATE ─────────────────────────────────────────────────────────────────
+  function getTodayKey() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
 
-let CAS = null;
+  function getDateLabel() {
+    return new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+  }
 
-async function chargerCas() {
-  const res = await fetch('./diagnostick_database.json');
-  const data = await res.json();
+  function secondsUntilMidnight() {
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0);
+    return Math.floor((midnight - now) / 1000);
+  }
 
-  const jsonDiagnostics = data.map(cas => cas.diagnostic);
+  function formatCountdown(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
 
-  DIAGNOSTICS = [...new Set([...DIAGNOSTICS, ...jsonDiagnostics])];
-  
-  CAS = transformerCas(data[Math.floor(Math.random() * data.length)]);
+  // ── STATS ────────────────────────────────────────────────────────────────
+  function getStats() {
+    try { return JSON.parse(localStorage.getItem(KEY_STATS)) || { joues:0, reussis:0, streak:0, lastDate:null }; }
+    catch { return { joues:0, reussis:0, streak:0, lastDate:null }; }
+  }
 
-  renderTries();
-  renderIndices();
-  console.log(data);
-  console.log(CAS);
-}
+  function saveStats(s) {
+    try { localStorage.setItem(KEY_STATS, JSON.stringify(s)); } catch {}
+  }
 
-function transformerCas(raw) {
-  return {
-    diagnostic: raw.diagnostic,
-    indices: raw.indices
-      .sort((a, b) => a.ordre - b.ordre)
-      .map(ind => ({
+  function updateStats(succes) {
+    const stats = getStats();
+    const today = getTodayKey();
+    const yesterday = (() => { const d = new Date(); d.setDate(d.getDate()-1); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
+    stats.joues++;
+    if (succes) {
+      stats.reussis++;
+      stats.streak = stats.lastDate === yesterday ? stats.streak + 1 : 1;
+    } else {
+      stats.streak = 0;
+    }
+    stats.lastDate = today;
+    saveStats(stats);
+    renderStats();
+  }
+
+  function renderStats() {
+    const s = getStats();
+    document.getElementById('stat-joues').textContent = s.joues;
+    document.getElementById('stat-reussis').textContent = s.joues > 0 ? Math.round(s.reussis / s.joues * 100) + '%' : '0%';
+    document.getElementById('stat-streak').textContent = s.streak;
+  }
+
+  // ── SESSION DU JOUR ──────────────────────────────────────────────────────
+  function getSession() {
+    try { return JSON.parse(localStorage.getItem(KEY_SESSION)) || null; }
+    catch { return null; }
+  }
+
+  function saveSession(data) {
+    try { localStorage.setItem(KEY_SESSION, JSON.stringify({ date: getTodayKey(), ...data })); } catch {}
+  }
+
+  // ── CAS DU JOUR ──────────────────────────────────────────────────────────
+  function joursDepuis(dateStr) {
+    const start = new Date(dateStr);
+    start.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Math.floor((today - start) / (1000 * 60 * 60 * 24));
+  }
+
+  function getCasDuJour(data, config) {
+    const offset = joursDepuis(config.start_date);
+    const index = (config.start_index + offset) % data.length;
+    return { cas: data[index], index };
+  }
+
+  async function chargerCas() {
+    try {
+      const [resData, resConfig] = await Promise.all([
+        fetch('./diagnostick_database.json'),
+        fetch('./config.json')
+      ]);
+      const data = await resData.json();
+      const config = await resConfig.json();
+      DIAGNOSTICS = [...new Set([...DIAGNOSTICS, ...data.map(c => c.diagnostic)])];
+      const { cas } = getCasDuJour(data, config);
+      CAS = transformerCas(cas);
+    } catch {
+      CAS = getCasDemo();
+    }
+
+    const session = getSession();
+    if (session && session.date === getTodayKey()) {
+      afficherDejaJoue(session);
+      return;
+    }
+
+    renderTries();
+    renderIndices();
+  }
+
+  function transformerCas(raw) {
+    return {
+      diagnostic: raw.diagnostic,
+      indices: raw.indices.sort((a,b) => a.ordre - b.ordre).map(ind => ({
         type: ind.type,
         text: ind.texte,
         hasImage: ind.image !== null,
-        imageLabel: ind.image ? ind.image : null
+        imageSrc: ind.image || null
       }))
-  };
-}
-
-function getDateLabel() {
-  const d = new Date();
-  return d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-}
-
-function renderTries() {
-  const row = document.getElementById('tries-row');
-  row.innerHTML = '';
-  for (let i = 0; i < MAX_ESSAIS; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'try-dot';
-    if (i < essaiActuel) dot.classList.add('used');
-    else if (i === essaiActuel) dot.classList.add('current');
-    dot.textContent = i + 1;
-    row.appendChild(dot);
+    };
   }
-}
 
-function getTag(type) {
-  const map = { anamnese: 'tag-anamnese', clinique: 'tag-clinique', paraclinique: 'tag-paraclinique', image: 'tag-image' };
-  const labels = { anamnese: 'Anamnèse', clinique: 'Clinique', paraclinique: 'Paraclinique', image: 'Imagerie' };
-  return { cls: map[type] || 'tag-anamnese', label: labels[type] || type };
-}
+  function getCasDemo() {
+    return {
+      diagnostic: "Rétrécissement aortique serré",
+      indices: [
+        { type:"anamnese", text:"Homme de 79 ans, hypertendu. Adressé pour dyspnée d'effort progressive (stade III NYHA) depuis 4 mois, avec épisodes de lipothymies à l'effort.", hasImage:false, imageSrc:null },
+        { type:"anamnese", text:"Il rapporte un épisode d'angor à l'effort la semaine précédente. Pas d'antécédent cardiaque connu.", hasImage:false, imageSrc:null },
+        { type:"clinique", text:"Souffle systolique éjectionnel 4/6 irradiant aux carotides, maximum au foyer aortique. Abolition du B2. Pouls parvus et tardus. Frémissement.", hasImage:false, imageSrc:null },
+        { type:"paraclinique", text:"ECG : hypertrophie ventriculaire gauche (Sokolow > 35 mm). Radio thoracique : cardiomégalie, calcifications aortiques.", hasImage:false, imageSrc:null },
+        { type:"image", text:"Échocardiographie Doppler transthoracique :", hasImage:true, imageSrc:null },
+        { type:"paraclinique", text:"ETT : surface aortique 0,7 cm², gradient moyen 52 mmHg, Vmax 4,8 m/s. FEVG 62%.", hasImage:false, imageSrc:null }
+      ]
+    };
+  }
 
-function renderIndices() {
-  if (!CAS) return;
-  const container = document.getElementById('indices-container');
-  container.innerHTML = '';
-  for (let i = 0; i < CAS.indices.length; i++) {
-    const ind = CAS.indices[i];
-    if (i < indicesVisibles) {
-      const tag = getTag(ind.type);
-      const card = document.createElement('div');
-      card.className = 'indice-card';
-      let imageHTML = '';
-      if (ind.hasImage) {
-        imageHTML = `<div class="indice-image"><span>${ind.imageLabel} — image à intégrer</span></div>`;
-      }
-      card.innerHTML = `
-        <div class="indice-header">
-          <span class="indice-tag ${tag.cls}">${tag.label}</span>
-          <span class="indice-num">Indice ${i + 1}</span>
+  // ── ÉCRAN DÉJÀ JOUÉ ──────────────────────────────────────────────────────
+  function afficherDejaJoue(session) {
+    document.getElementById('tries-row').style.display = 'none';
+    document.getElementById('indices-container').style.display = 'none';
+    document.getElementById('input-zone').style.display = 'none';
+
+    const emoji = session.emoji || '';
+    const zone = document.getElementById('result-zone');
+    zone.innerHTML = `
+      <div class="deja-joue">
+        <h2>${session.succes ? 'Bravo !' : 'Raté hier'}</h2>
+        <div class="result-emoji" style="margin: 10px 0;">${emoji}</div>
+        <p>${session.succes
+          ? `Diagnostic trouvé en ${session.essais} essai${session.essais > 1 ? 's' : ''} — <strong>${session.diagnostic}</strong>`
+          : `Le diagnostic était : <strong>${session.diagnostic}</strong>`
+        }</p>
+        <p>Vous avez déjà joué aujourd'hui.</p>
+        <div class="countdown-block">
+          <div class="countdown-label">Prochain cas dans</div>
+          <div class="countdown-time" id="countdown-time">--:--:--</div>
         </div>
-        <div class="indice-text">${ind.text}</div>
-        ${imageHTML}
-      `;
-      container.appendChild(card);
-    } else {
-      const locked = document.createElement('div');
-      locked.className = 'indice-locked-card';
-      locked.innerHTML = `<svg class="lock-icon" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.2"/></svg><span class="indice-locked-text">Indice ${i + 1} — validez ou passez pour déverrouiller</span>`;
-      container.appendChild(locked);
+        <div class="result-actions">
+          <button class="btn-partager" id="btn-partager-deja">Partager mon résultat</button>
+          <a class="btn-archives-link" href="./archives.html">Voir les archives</a>
+        </div>
+        <div class="share-confirm" id="share-confirm-deja" style="display:none;">Copié !</div>
+      </div>
+    `;
+
+    document.getElementById('btn-partager-deja').addEventListener('click', () => {
+      const txt = `Diagnostick — ${getDateLabel()}\n${emoji}\nhttps://syssans.github.io/Diagnostick/`;
+      navigator.clipboard.writeText(txt).catch(()=>{});
+      document.getElementById('share-confirm-deja').style.display = 'block';
+    });
+
+    startCountdown();
+  }
+
+  function startCountdown() {
+    function tick() {
+      const el = document.getElementById('countdown-time');
+      if (!el) { clearInterval(countdownInterval); return; }
+      el.textContent = formatCountdown(secondsUntilMidnight());
+    }
+    tick();
+    countdownInterval = setInterval(tick, 1000);
+  }
+
+  // ── RENDU JEU ────────────────────────────────────────────────────────────
+  function renderTries() {
+    const row = document.getElementById('tries-row');
+    row.innerHTML = '';
+    for (let i = 0; i < MAX_ESSAIS; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'try-dot' + (i < essaiActuel ? ' used' : i === essaiActuel ? ' current' : '');
+      dot.textContent = i + 1;
+      row.appendChild(dot);
     }
   }
-}
 
-function filterDiagnostics(query) {
-  if (!query || query.length < 2) return [];
-  const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  return DIAGNOSTICS.filter(d => {
-    const dn = d.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    return dn.includes(q);
-  }).slice(0, 6);
-}
+  function getTag(type) {
+    return ({
+      anamnese:    { cls:'tag-anamnese',    label:'Anamnèse' },
+      clinique:    { cls:'tag-clinique',    label:'Clinique' },
+      paraclinique:{ cls:'tag-paraclinique',label:'Paraclinique' },
+      image:       { cls:'tag-image',       label:'Imagerie' }
+    })[type] || { cls:'tag-anamnese', label:type };
+  }
 
-function showDropdown(items) {
-  const dd = document.getElementById('dropdown');
-  if (!items.length) { dd.style.display = 'none'; return; }
-  dd.innerHTML = '';
-  items.forEach(item => {
-    const el = document.createElement('div');
-    el.className = 'dropdown-item';
-    el.textContent = item;
-    el.addEventListener('mousedown', (e) => {
-      e.preventDefault();
-      document.getElementById('diag-input').value = item;
-      inputValue = item;
-      dd.style.display = 'none';
+  function renderIndices() {
+    if (!CAS) return;
+    const container = document.getElementById('indices-container');
+    container.innerHTML = '';
+    CAS.indices.forEach((ind, i) => {
+      if (i < indicesVisibles) {
+        const tag = getTag(ind.type);
+        const card = document.createElement('div');
+        card.className = 'indice-card';
+        const imageHTML = ind.hasImage
+          ? `<div class="indice-image">${ind.imageSrc ? `<img src="./images/${ind.imageSrc}" alt="Imagerie" />` : '<span>Image à venir</span>'}</div>`
+          : '';
+        card.innerHTML = `
+          <div class="indice-header">
+            <span class="indice-tag ${tag.cls}">${tag.label}</span>
+            <span class="indice-num">Indice ${i+1}</span>
+          </div>
+          <div class="indice-text">${ind.text}</div>${imageHTML}`;
+        container.appendChild(card);
+      } else {
+        const locked = document.createElement('div');
+        locked.className = 'indice-locked-card';
+        locked.innerHTML = `<svg class="lock-icon" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.2"/></svg><span class="indice-locked-text">Indice ${i+1} — validez ou passez pour déverrouiller</span>`;
+        container.appendChild(locked);
+      }
     });
-    dd.appendChild(el);
-  });
-  dd.style.display = 'block';
-}
-
-function avancer() {
-  if (indicesVisibles < CAS.indices.length) indicesVisibles++;
-}
-
-function terminer(succes) {
-  termine = true;
-  document.getElementById('input-zone').style.display = 'none';
-  const tries = document.getElementById('tries-row');
-  const dots = tries.querySelectorAll('.try-dot');
-  if (succes && dots[essaiActuel]) {
-    dots[essaiActuel].classList.remove('current');
-    dots[essaiActuel].classList.add('correct');
   }
-  indicesVisibles = CAS.indices.length;
-  renderIndices();
 
-  const emoji = Array.from({length: MAX_ESSAIS}, (_, i) => i < essaiActuel ? '🟥' : i === essaiActuel && succes ? '🟩' : '⬜').join('');
-  const zone = document.getElementById('result-zone');
-  zone.innerHTML = `
-    <div class="result-banner">
-      <h2>${succes ? 'Bravo !' : 'Raté pour aujourd\'hui'}</h2>
-      <p>${succes ? `Diagnostic trouvé en ${essaiActuel + 1} essai${essaiActuel > 0 ? 's' : ''}.` : `Le diagnostic était : <strong>${CAS.diagnostic}</strong>`}</p>
-      <button class="btn-partager" id="btn-partager">Partager mon résultat</button>
-      <div class="share-text" id="share-text" style="display:none;">Diagnostick — ${getDateLabel()}<br>${emoji}<br>Copié !</div>
-    </div>
-  `;
-  document.getElementById('btn-partager').addEventListener('click', () => {
-    const txt = `Diagnostick — ${getDateLabel()}\n${emoji}\nhttps://syssans.github.io/Diagnostick/`;
-    navigator.clipboard.writeText(txt).catch(()=>{});
-    document.getElementById('share-text').style.display = 'block';
-  });
-}
-
-function valider() {
-  const val = document.getElementById('diag-input').value.trim();
-  if (!val) return;
-  document.getElementById('dropdown').style.display = 'none';
-  const fb = document.getElementById('feedback');
-  const correct = val.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === CAS.diagnostic.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  if (correct) {
-    fb.innerHTML = `<div class="feedback correct">Exact ! Le diagnostic est bien <strong>${CAS.diagnostic}</strong>.</div>`;
-    terminer(true);
-    return;
+  // ── AUTOCOMPLETE ─────────────────────────────────────────────────────────
+  function normalise(str) {
+    return str.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
   }
-  fb.innerHTML = `<div class="feedback wrong">Ce n'est pas le bon diagnostic. Prochain indice déverrouillé.</div>`;
-  document.getElementById('diag-input').value = '';
-  inputValue = '';
-  essaiActuel++;
-  if (essaiActuel >= MAX_ESSAIS) { terminer(false); return; }
-  avancer();
-  renderTries();
-  renderIndices();
-}
 
-function passer() {
-  const fb = document.getElementById('feedback');
-  fb.innerHTML = `<div class="feedback reveal">Essai passé. Prochain indice déverrouillé.</div>`;
-  document.getElementById('diag-input').value = '';
-  document.getElementById('dropdown').style.display = 'none';
-  essaiActuel++;
-  if (essaiActuel >= MAX_ESSAIS) { terminer(false); return; }
-  avancer();
-  renderTries();
-  renderIndices();
-}
+  function showDropdown(items) {
+    const dd = document.getElementById('dropdown');
+    if (!items.length) { dd.style.display='none'; return; }
+    dd.innerHTML = '';
+    items.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'dropdown-item';
+      el.textContent = item;
+      el.addEventListener('mousedown', e => {
+        e.preventDefault();
+        document.getElementById('diag-input').value = item;
+        dd.style.display = 'none';
+      });
+      dd.appendChild(el);
+    });
+    dd.style.display = 'block';
+  }
 
-document.getElementById('date-label').textContent = getDateLabel();
+  // ── LOGIQUE ───────────────────────────────────────────────────────────────
+  function buildEmoji(succes) {
+    return Array.from({length:MAX_ESSAIS}, (_,i) =>
+      i < essaiActuel ? '🟥' : (i === essaiActuel && succes ? '🟩' : '⬜')
+    ).join('');
+  }
 
-document.getElementById('diag-input').addEventListener('input', e => {
-  inputValue = e.target.value;
-  showDropdown(filterDiagnostics(inputValue));
-});
-document.getElementById('diag-input').addEventListener('blur', () => {
-  setTimeout(() => { document.getElementById('dropdown').style.display = 'none'; }, 120);
-});
-document.getElementById('diag-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') valider();
-});
-document.getElementById('btn-valider').addEventListener('click', valider);
-document.getElementById('btn-passer').addEventListener('click', passer);
+  function terminer(succes) {
+    termine = true;
+    const emoji = buildEmoji(succes);
 
-chargerCas();
+    saveSession({ succes, diagnostic: CAS.diagnostic, essais: essaiActuel + 1, emoji });
+    updateStats(succes);
+
+    document.getElementById('input-zone').style.display = 'none';
+    const dots = document.querySelectorAll('.try-dot');
+    if (succes && dots[essaiActuel]) {
+      dots[essaiActuel].classList.remove('current');
+      dots[essaiActuel].classList.add('correct');
+    }
+    indicesVisibles = CAS.indices.length;
+    renderIndices();
+
+    document.getElementById('result-zone').innerHTML = `
+      <div class="result-banner">
+        <h2>${succes ? 'Bravo !' : 'Raté pour aujourd\'hui'}</h2>
+        <div class="result-emoji">${emoji}</div>
+        <p>${succes
+          ? `Trouvé en ${essaiActuel+1} essai${essaiActuel>0?'s':''} — <strong>${CAS.diagnostic}</strong>`
+          : `Le diagnostic était : <strong>${CAS.diagnostic}</strong>`
+        }</p>
+        <div class="countdown-block">
+          <div class="countdown-label">Prochain cas dans</div>
+          <div class="countdown-time" id="countdown-time">--:--:--</div>
+        </div>
+        <div class="result-actions">
+          <button class="btn-partager" id="btn-partager">Partager mon résultat</button>
+          <a class="btn-archives-link" href="./archives.html">Voir les archives</a>
+        </div>
+        <div class="share-confirm" id="share-confirm" style="display:none;">Copié !</div>
+      </div>`;
+
+    document.getElementById('btn-partager').addEventListener('click', () => {
+      navigator.clipboard.writeText(`Diagnostick — ${getDateLabel()}\n${emoji}\nhttps://syssans.github.io/Diagnostick/`).catch(()=>{});
+      document.getElementById('share-confirm').style.display = 'block';
+    });
+
+    startCountdown();
+  }
+
+  function valider() {
+    if (termine) return;
+    const val = document.getElementById('diag-input').value.trim();
+    if (!val) return;
+    document.getElementById('dropdown').style.display = 'none';
+    const fb = document.getElementById('feedback');
+    if (normalise(val) === normalise(CAS.diagnostic)) {
+      fb.innerHTML = `<div class="feedback correct">Exact — <strong>${CAS.diagnostic}</strong>.</div>`;
+      terminer(true); return;
+    }
+    fb.innerHTML = `<div class="feedback wrong">Ce n'est pas le bon diagnostic.</div>`;
+    document.getElementById('diag-input').value = '';
+    essaiActuel++;
+    if (essaiActuel >= MAX_ESSAIS) { terminer(false); return; }
+    if (indicesVisibles < CAS.indices.length) indicesVisibles++;
+    renderTries(); renderIndices();
+  }
+
+  function passer() {
+    if (termine) return;
+    document.getElementById('feedback').innerHTML = `<div class="feedback reveal">Essai passé.</div>`;
+    document.getElementById('diag-input').value = '';
+    document.getElementById('dropdown').style.display = 'none';
+    essaiActuel++;
+    if (essaiActuel >= MAX_ESSAIS) { terminer(false); return; }
+    if (indicesVisibles < CAS.indices.length) indicesVisibles++;
+    renderTries(); renderIndices();
+  }
+
+  // ── INIT ─────────────────────────────────────────────────────────────────
+  document.getElementById('date-label').textContent = getDateLabel();
+
+  document.getElementById('diag-input').addEventListener('input', e => {
+    const q = normalise(e.target.value);
+    if (q.length < 2) { document.getElementById('dropdown').style.display='none'; return; }
+    showDropdown(DIAGNOSTICS.filter(d => normalise(d).includes(q)).slice(0,7));
+  });
+  document.getElementById('diag-input').addEventListener('blur', () => {
+    setTimeout(() => { document.getElementById('dropdown').style.display='none'; }, 150);
+  });
+  document.getElementById('diag-input').addEventListener('keydown', e => { if (e.key==='Enter') valider(); });
+  document.getElementById('btn-valider').addEventListener('click', valider);
+  document.getElementById('btn-passer').addEventListener('click', passer);
+
+  renderStats();
+  chargerCas();
 </script>
+</body>
+</html>

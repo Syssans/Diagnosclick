@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Archives — Diagnostick</title>
+  <style>
+    :root {
+      --bg-primary: #1a1a18;
+      --bg-secondary: #242422;
+      --bg-tertiary: #2e2e2c;
+      --text-primary: #f5f4ee;
+      --text-secondary: #a8a69a;
+      --text-tertiary: #6e6c64;
+      --border-subtle: rgba(222, 220, 209, 0.12);
+      --border-mid: rgba(222, 220, 209, 0.25);
+      --border-strong: rgba(222, 220, 209, 0.4);
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-full: 9999px;
+      --tag-anamnese-bg: rgba(37, 62, 95, 0.7);
+      --tag-anamnese-text: #80aadd;
+      --tag-clinique-bg: rgba(27, 70, 20, 0.7);
+      --tag-clinique-text: #7ab948;
+      --tag-paraclinique-bg: rgba(72, 58, 15, 0.7);
+      --tag-paraclinique-text: #d1a041;
+      --tag-image-bg: rgba(55, 45, 90, 0.7);
+      --tag-image-text: #afa9ec;
+      --green: #4a7a1a;
+      --green-light: #c0dd97;
+      --green-bg: rgba(27, 70, 20, 0.4);
+      --red: #a32d2d;
+      --red-light: #f7c1c1;
+      --red-bg: rgba(96, 42, 40, 0.4);
+      --neutral-bg: rgba(38, 38, 36, 0.8);
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f5f4ed;
+        --bg-tertiary: #eeede6;
+        --text-primary: #14140f;
+        --text-secondary: #3d3d3a;
+        --text-tertiary: #73726c;
+        --border-subtle: rgba(31, 30, 29, 0.1);
+        --border-mid: rgba(31, 30, 29, 0.2);
+        --border-strong: rgba(31, 30, 29, 0.35);
+        --tag-anamnese-bg: #d6e4f6; --tag-anamnese-text: #0c447c;
+        --tag-clinique-bg: #d4edda; --tag-clinique-text: #085041;
+        --tag-paraclinique-bg: #faeeda; --tag-paraclinique-text: #633806;
+        --tag-image-bg: #eeedfe; --tag-image-text: #3c3489;
+        --green: #3b6d11; --green-light: #639922; --green-bg: #eaf3de;
+        --red: #791f1f; --red-light: #a32d2d; --red-bg: #fcebeb;
+        --neutral-bg: #f5f4ed;
+      }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+    #app { max-width: 620px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+
+    .header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 0.5px solid var(--border-subtle); }
+    .header h1 { font-size: 28px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .header-sub { font-size: 13px; color: var(--text-tertiary); margin-top: 5px; }
+    .back-link { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-tertiary); text-decoration: none; border: 0.5px solid var(--border-subtle); border-radius: var(--radius-full); padding: 3px 10px; margin-top: 10px; transition: all 0.1s; }
+    .back-link:hover { color: var(--text-secondary); border-color: var(--border-mid); }
+
+    /* LISTE */
+    .archive-list { display: flex; flex-direction: column; gap: 8px; }
+    .archive-item { background: var(--bg-secondary); border: 0.5px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 0.9rem 1.1rem; cursor: pointer; transition: border-color 0.1s; }
+    .archive-item:hover { border-color: var(--border-mid); }
+    .archive-item-header { display: flex; align-items: center; justify-content: space-between; }
+    .archive-date { font-size: 12px; color: var(--text-tertiary); }
+    .archive-specialite { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 0.04em; }
+    .sp-cardiologie { background: var(--tag-anamnese-bg); color: var(--tag-anamnese-text); }
+    .sp-urgences    { background: var(--tag-image-bg);    color: var(--tag-image-text); }
+    .sp-pneumologie { background: var(--tag-clinique-bg); color: var(--tag-clinique-text); }
+    .sp-neurologie  { background: var(--tag-paraclinique-bg); color: var(--tag-paraclinique-text); }
+    .sp-medecine-interne { background: var(--tag-image-bg); color: var(--tag-image-text); }
+    .archive-diagnostic { font-size: 15px; font-weight: 600; margin-top: 5px; }
+    .archive-diff { display: flex; gap: 3px; margin-top: 4px; }
+    .diff-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-mid); }
+    .diff-dot.active { background: var(--text-secondary); }
+    .archive-played { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: flex-start; justify-content: center; z-index: 100; padding: 1rem; overflow-y: auto; }
+    .modal { background: var(--bg-primary); border: 0.5px solid var(--border-mid); border-radius: var(--radius-lg); width: 100%; max-width: 600px; margin: auto; padding: 1.5rem; }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .modal-title { font-size: 16px; font-weight: 600; }
+    .modal-close { background: none; border: none; cursor: pointer; font-size: 20px; color: var(--text-tertiary); padding: 0 4px; line-height: 1; }
+    .modal-close:hover { color: var(--text-primary); }
+    .modal-date { font-size: 12px; color: var(--text-tertiary); margin-bottom: 1rem; }
+
+    .indices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
+    .indice-card { background: var(--bg-secondary); border: 0.5px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 0.9rem 1.1rem; animation: fadeSlide 0.2s ease; }
+    @keyframes fadeSlide { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+    .indice-header { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .indice-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 0.04em; }
+    .tag-anamnese { background: var(--tag-anamnese-bg); color: var(--tag-anamnese-text); }
+    .tag-clinique { background: var(--tag-clinique-bg); color: var(--tag-clinique-text); }
+    .tag-paraclinique { background: var(--tag-paraclinique-bg); color: var(--tag-paraclinique-text); }
+    .tag-image { background: var(--tag-image-bg); color: var(--tag-image-text); }
+    .indice-num { font-size: 11px; color: var(--text-tertiary); }
+    .indice-text { font-size: 14px; line-height: 1.65; }
+    .indice-image { width:100%; border-radius:var(--radius-md); margin-top:10px; background:var(--bg-tertiary); height:180px; display:flex; align-items:center; justify-content:center; border:0.5px solid var(--border-subtle); }
+    .indice-image img { max-width:100%; max-height:100%; border-radius:var(--radius-md); object-fit:contain; }
+    .indice-image span { font-size:12px; color:var(--text-tertiary); }
+    .indice-locked-card { background:var(--bg-secondary); border:0.5px dashed var(--border-subtle); border-radius:var(--radius-lg); padding:0.7rem 1.1rem; display:flex; align-items:center; gap:8px; opacity:0.6; }
+    .indice-locked-text { font-size:13px; color:var(--text-tertiary); }
+    .lock-icon { width:12px; height:12px; opacity:0.3; flex-shrink:0; }
+
+    .tries { display:flex; gap:8px; justify-content:center; margin-bottom:1.25rem; }
+    .try-dot { width:30px; height:30px; border-radius:50%; border:0.5px solid var(--border-mid); background:var(--bg-secondary); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; color:var(--text-tertiary); }
+    .try-dot.used { background:var(--red-bg); border-color:var(--red); color:var(--red-light); }
+    .try-dot.current { border-color:var(--border-strong); background:var(--bg-tertiary); color:var(--text-primary); }
+    .try-dot.correct { background:var(--green-bg); border-color:var(--green); color:var(--green-light); }
+
+    .input-zone { position:relative; background:var(--bg-secondary); border:0.5px solid var(--border-mid); border-radius:var(--radius-lg); padding:0.9rem; }
+    .input-row { display:flex; gap:8px; }
+    .diag-input { flex:1; font-size:14px; padding:0 12px; height:38px; border-radius:var(--radius-md); border:0.5px solid var(--border-mid); background:var(--bg-primary); color:var(--text-primary); outline:none; font-family:inherit; }
+    .diag-input::placeholder { color:var(--text-tertiary); }
+    .diag-input:focus { border-color:var(--border-strong); }
+    .btn-valider { height:38px; padding:0 16px; font-size:13px; font-weight:600; border-radius:var(--radius-md); border:0.5px solid var(--border-strong); background:var(--text-primary); color:var(--bg-primary); cursor:pointer; white-space:nowrap; font-family:inherit; transition:opacity 0.1s; }
+    .btn-valider:hover { opacity:0.85; }
+    .btn-passer { height:38px; padding:0 12px; font-size:13px; border-radius:var(--radius-md); border:0.5px solid var(--border-subtle); background:transparent; color:var(--text-secondary); cursor:pointer; font-family:inherit; }
+    .btn-passer:hover { background:var(--bg-tertiary); }
+    .dropdown { position:absolute; top:calc(0.9rem + 38px + 8px); left:0.9rem; right:0.9rem; background:var(--bg-primary); border:0.5px solid var(--border-mid); border-radius:var(--radius-md); z-index:200; overflow:hidden; }
+    .dropdown-item { padding:9px 12px; font-size:14px; color:var(--text-primary); cursor:pointer; }
+    .dropdown-item:hover { background:var(--bg-secondary); }
+    .feedback { margin-top:8px; padding:8px 12px; border-radius:var(--radius-md); font-size:13px; line-height:1.5; }
+    .feedback.wrong { background:var(--red-bg); color:var(--red-light); border:0.5px solid var(--red); }
+    .feedback.correct { background:var(--green-bg); color:var(--green-light); border:0.5px solid var(--green); }
+    .feedback.reveal { background:var(--neutral-bg); color:var(--text-secondary); border:0.5px solid var(--border-subtle); }
+    .result-banner { text-align:center; padding:1.5rem; background:var(--bg-secondary); border-radius:var(--radius-lg); border:0.5px solid var(--border-subtle); margin-top:1rem; }
+    .result-banner h2 { font-size:18px; font-weight:700; margin-bottom:6px; }
+    .result-banner p { font-size:13px; color:var(--text-secondary); line-height:1.6; }
+    .result-emoji { font-size:18px; letter-spacing:3px; margin-bottom:10px; }
+
+    .empty-state { text-align:center; padding:3rem 1rem; color:var(--text-tertiary); font-size:14px; }
+
+    .footer { text-align:center; margin-top:2.5rem; padding-top:1.25rem; border-top:0.5px solid var(--border-subtle); }
+    .footer p { font-size:12px; color:var(--text-tertiary); line-height:1.6; }
+    .footer a { color:var(--text-tertiary); text-decoration:none; }
+    .footer a:hover { color:var(--text-secondary); }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <h1>Diagnostick</h1>
+    <p class="header-sub">Archives</p>
+    <a class="back-link" href="./index.html">← Cas du jour</a>
+  </div>
+
+  <div id="archive-list-container"></div>
+
+  <div class="footer">
+    <p>Diagnostick — <a href="./index.html">Cas du jour</a></p>
+  </div>
+</div>
+
+<!-- MODAL JEU -->
+<div class="modal-overlay" id="modal-overlay" style="display:none;">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title"></span>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <p class="modal-date" id="modal-date"></p>
+    <div class="tries" id="modal-tries"></div>
+    <div class="indices" id="modal-indices"></div>
+    <div class="input-zone" id="modal-input-zone">
+      <div class="input-row">
+        <input class="diag-input" id="modal-diag-input" type="text" placeholder="Entrez un diagnostic..." autocomplete="off" />
+        <button class="btn-passer" id="modal-btn-passer">Passer</button>
+        <button class="btn-valider" id="modal-btn-valider">Valider</button>
+      </div>
+      <div class="dropdown" id="modal-dropdown" style="display:none;"></div>
+      <div id="modal-feedback"></div>
+    </div>
+    <div id="modal-result"></div>
+  </div>
+</div>
+
+<script>
+  let ALL_DATA = [];
+  let DIAGNOSTICS = [];
+  let CONFIG = { start_date: '2026-04-02', start_index: 0 };
+
+  // ── DATE ─────────────────────────────────────────────────────────────────
+  function joursDepuis(dateStr) {
+    const start = new Date(dateStr);
+    start.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Math.floor((today - start) / (1000 * 60 * 60 * 24));
+  }
+
+  // Index du cas joué aujourd'hui
+  function getTodayIndex() {
+    const offset = joursDepuis(CONFIG.start_date);
+    return (CONFIG.start_index + offset) % ALL_DATA.length;
+  }
+
+  // Date à laquelle un index donné a été joué
+  function getDateForIndex(index) {
+    const offset = joursDepuis(CONFIG.start_date);
+    const todayIndex = (CONFIG.start_index + offset) % ALL_DATA.length;
+
+    // Combien de jours sépare cet index du cas du jour
+    let diff = index - todayIndex;
+    // Si l'index est "derrière" dans le cycle, c'est dans le passé
+    if (diff > 0) diff -= ALL_DATA.length;
+
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() + diff);
+    return d;
+  }
+
+  function formatDate(d) {
+    return d.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+  }
+
+  // ── CHARGEMENT ───────────────────────────────────────────────────────────
+  async function charger() {
+    try {
+      const [resData, resConfig] = await Promise.all([
+        fetch('./diagnostick_database.json'),
+        fetch('./config.json')
+      ]);
+      ALL_DATA = await resData.json();
+      CONFIG = await resConfig.json();
+      DIAGNOSTICS = ALL_DATA.map(c => c.diagnostic);
+    } catch {
+      ALL_DATA = [];
+    }
+    renderArchives();
+  }
+
+  function transformerCas(raw) {
+    return {
+      diagnostic: raw.diagnostic,
+      specialite: raw.specialite || 'cardiologie',
+      difficulte: raw.difficulte || 1,
+      indices: raw.indices.sort((a,b) => a.ordre - b.ordre).map(ind => ({
+        type: ind.type,
+        text: ind.texte,
+        hasImage: ind.image !== null,
+        imageSrc: ind.image || null
+      }))
+    };
+  }
+
+  // ── RENDU LISTE ──────────────────────────────────────────────────────────
+  function renderArchives() {
+    const container = document.getElementById('archive-list-container');
+    const todayIndex = getTodayIndex();
+
+    if (!ALL_DATA.length) {
+      container.innerHTML = '<div class="empty-state">Aucun cas disponible pour le moment.</div>';
+      return;
+    }
+
+    const passes = [];
+    for (let i = 0; i < ALL_DATA.length; i++) {
+      if (i === todayIndex) continue;
+      const date = getDateForIndex(i);
+      if (date < new Date()) {
+        passes.push({ index: i, date, cas: transformerCas(ALL_DATA[i]) });
+      }
+    }
+
+    passes.sort((a, b) => b.date - a.date);
+
+    if (!passes.length) {
+      container.innerHTML = '<div class="empty-state">Les archives apparaîtront ici dès demain.</div>';
+      return;
+    }
+
+    const list = document.createElement('div');
+    list.className = 'archive-list';
+
+    passes.forEach(({ index, date, cas }) => {
+      const item = document.createElement('div');
+      item.className = 'archive-item';
+
+      const spClass = 'sp-' + (cas.specialite || 'cardiologie').replace(/\s+/g, '-');
+      const diffDots = Array.from({length:3}, (_,i) =>
+        `<div class="diff-dot${i < cas.difficulte ? ' active' : ''}"></div>`
+      ).join('');
+
+      item.innerHTML = `
+        <div class="archive-item-header">
+          <span class="archive-date">${formatDate(date)}</span>
+          <span class="archive-specialite ${spClass}">${cas.specialite}</span>
+        </div>
+        <div class="archive-diagnostic">${cas.diagnostic}</div>
+        <div class="archive-diff">${diffDots}</div>
+      `;
+
+      item.addEventListener('click', () => ouvrirModal(cas, date));
+      list.appendChild(item);
+    });
+
+    container.appendChild(list);
+  }
+
+  // ── MODAL ────────────────────────────────────────────────────────────────
+  let modalState = { cas:null, essais:0, indices:1, termine:false };
+
+  function ouvrirModal(cas, date) {
+    modalState = { cas, essais:0, indices:1, termine:false };
+
+    document.getElementById('modal-title').textContent = 'Cas du ' + formatDate(date);
+    document.getElementById('modal-date').textContent = cas.specialite + ' · ' + '★'.repeat(cas.difficulte);
+    document.getElementById('modal-overlay').style.display = 'flex';
+    document.getElementById('modal-input-zone').style.display = 'block';
+    document.getElementById('modal-result').innerHTML = '';
+    document.getElementById('modal-feedback').innerHTML = '';
+    document.getElementById('modal-diag-input').value = '';
+    document.body.style.overflow = 'hidden';
+
+    renderModalTries();
+    renderModalIndices();
+  }
+
+  function fermerModal() {
+    document.getElementById('modal-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function renderModalTries() {
+    const row = document.getElementById('modal-tries');
+    row.innerHTML = '';
+    for (let i = 0; i < 6; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'try-dot' + (i < modalState.essais ? ' used' : i === modalState.essais ? ' current' : '');
+      dot.textContent = i + 1;
+      row.appendChild(dot);
+    }
+  }
+
+  function getTag(type) {
+    return ({
+      anamnese:    { cls:'tag-anamnese',    label:'Anamnèse' },
+      clinique:    { cls:'tag-clinique',    label:'Clinique' },
+      paraclinique:{ cls:'tag-paraclinique',label:'Paraclinique' },
+      image:       { cls:'tag-image',       label:'Imagerie' }
+    })[type] || { cls:'tag-anamnese', label:type };
+  }
+
+  function renderModalIndices() {
+    const container = document.getElementById('modal-indices');
+    container.innerHTML = '';
+    modalState.cas.indices.forEach((ind, i) => {
+      if (i < modalState.indices) {
+        const tag = getTag(ind.type);
+        const card = document.createElement('div');
+        card.className = 'indice-card';
+        const imageHTML = ind.hasImage
+          ? `<div class="indice-image">${ind.imageSrc ? `<img src="./images/${ind.imageSrc}" alt="Imagerie" />` : '<span>Image à venir</span>'}</div>`
+          : '';
+        card.innerHTML = `
+          <div class="indice-header">
+            <span class="indice-tag ${tag.cls}">${tag.label}</span>
+            <span class="indice-num">Indice ${i+1}</span>
+          </div>
+          <div class="indice-text">${ind.text}</div>${imageHTML}`;
+        container.appendChild(card);
+      } else {
+        const locked = document.createElement('div');
+        locked.className = 'indice-locked-card';
+        locked.innerHTML = `<svg class="lock-icon" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.2"/></svg><span class="indice-locked-text">Indice ${i+1} — validez ou passez pour déverrouiller</span>`;
+        container.appendChild(locked);
+      }
+    });
+  }
+
+  function normalise(str) {
+    return str.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  }
+
+  function showModalDropdown(items) {
+    const dd = document.getElementById('modal-dropdown');
+    if (!items.length) { dd.style.display='none'; return; }
+    dd.innerHTML = '';
+    items.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'dropdown-item';
+      el.textContent = item;
+      el.addEventListener('mousedown', e => {
+        e.preventDefault();
+        document.getElementById('modal-diag-input').value = item;
+        dd.style.display = 'none';
+      });
+      dd.appendChild(el);
+    });
+    dd.style.display = 'block';
+  }
+
+  function buildEmoji(essais, succes) {
+    return Array.from({length:6}, (_,i) =>
+      i < essais ? '🟥' : (i === essais && succes ? '🟩' : '⬜')
+    ).join('');
+  }
+
+  function terminerModal(succes) {
+    modalState.termine = true;
+    document.getElementById('modal-input-zone').style.display = 'none';
+    const dots = document.querySelectorAll('#modal-tries .try-dot');
+    if (succes && dots[modalState.essais]) {
+      dots[modalState.essais].classList.remove('current');
+      dots[modalState.essais].classList.add('correct');
+    }
+    modalState.indices = modalState.cas.indices.length;
+    renderModalIndices();
+
+    const emoji = buildEmoji(modalState.essais, succes);
+    document.getElementById('modal-result').innerHTML = `
+      <div class="result-banner">
+        <h2>${succes ? 'Bravo !' : 'Raté'}</h2>
+        <div class="result-emoji">${emoji}</div>
+        <p>${succes
+          ? `Trouvé en ${modalState.essais+1} essai${modalState.essais>0?'s':''} — <strong>${modalState.cas.diagnostic}</strong>`
+          : `Le diagnostic était : <strong>${modalState.cas.diagnostic}</strong>`
+        }</p>
+      </div>`;
+  }
+
+  function validerModal() {
+    if (modalState.termine) return;
+    const val = document.getElementById('modal-diag-input').value.trim();
+    if (!val) return;
+    document.getElementById('modal-dropdown').style.display = 'none';
+    const fb = document.getElementById('modal-feedback');
+    if (normalise(val) === normalise(modalState.cas.diagnostic)) {
+      fb.innerHTML = `<div class="feedback correct">Exact — <strong>${modalState.cas.diagnostic}</strong>.</div>`;
+      terminerModal(true); return;
+    }
+    fb.innerHTML = `<div class="feedback wrong">Ce n'est pas le bon diagnostic.</div>`;
+    document.getElementById('modal-diag-input').value = '';
+    modalState.essais++;
+    if (modalState.essais >= 6) { terminerModal(false); return; }
+    if (modalState.indices < modalState.cas.indices.length) modalState.indices++;
+    renderModalTries(); renderModalIndices();
+  }
+
+  function passerModal() {
+    if (modalState.termine) return;
+    document.getElementById('modal-feedback').innerHTML = `<div class="feedback reveal">Essai passé.</div>`;
+    document.getElementById('modal-diag-input').value = '';
+    document.getElementById('modal-dropdown').style.display = 'none';
+    modalState.essais++;
+    if (modalState.essais >= 6) { terminerModal(false); return; }
+    if (modalState.indices < modalState.cas.indices.length) modalState.indices++;
+    renderModalTries(); renderModalIndices();
+  }
+
+  // ── EVENTS ───────────────────────────────────────────────────────────────
+  document.getElementById('modal-close').addEventListener('click', fermerModal);
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal-overlay')) fermerModal();
+  });
+  document.getElementById('modal-btn-valider').addEventListener('click', validerModal);
+  document.getElementById('modal-btn-passer').addEventListener('click', passerModal);
+  document.getElementById('modal-diag-input').addEventListener('input', e => {
+    const q = normalise(e.target.value);
+    if (q.length < 2) { document.getElementById('modal-dropdown').style.display='none'; return; }
+    showModalDropdown(DIAGNOSTICS.filter(d => normalise(d).includes(q)).slice(0,7));
+  });
+  document.getElementById('modal-diag-input').addEventListener('blur', () => {
+    setTimeout(() => { document.getElementById('modal-dropdown').style.display='none'; }, 150);
+  });
+  document.getElementById('modal-diag-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') validerModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') fermerModal();
+  });
+
+  charger();
+</script>
+</body>
+</html>
