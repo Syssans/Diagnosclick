@@ -43,7 +43,20 @@
       }
     ],
     "explication": "Le SCA ST+ est une urgence absolue définie par une occlusion coronaire aiguë complète. Le diagnostic repose sur la clinique (douleur typique), l'ECG (sus-décalage de ST persistant) et la troponine. La prise en charge implique une revascularisation en urgence par angioplastie primaire dans les 90 minutes suivant le premier contact médical.",
-    "references": ["Collège de Cardiologie et Médecine Vasculaire", "ESC Guidelines 2023 ACS"]
+    "references": [
+      "Collège de Cardiologie et Médecine Vasculaire",
+      "ESC Guidelines 2023 ACS"
+    ],
+    "constantes": {
+      "disponible_a_partir_de": 3,
+      "valeurs": {
+        "FC": "94 bpm",
+        "PA": "155/90 mmHg",
+        "SpO2": "97%",
+        "FR": "18/min",
+        "Temperature": "37.2°C"
+      }
+    }
   },
   {
     "id": "cardio-002",
@@ -89,7 +102,20 @@
       }
     ],
     "explication": "La dissection aortique de type A (atteinte de l'aorte ascendante, classification de Stanford) est une urgence chirurgicale. Les éléments clés sont la douleur déchirante migrante, l'asymétrie tensionnelle, l'élargissement médiastinal et le flap intimal au scanner. Le pronostic est sombre sans chirurgie immédiate.",
-    "references": ["Collège de Cardiologie et Médecine Vasculaire", "ESC Guidelines 2024 Aortic Diseases"]
+    "references": [
+      "Collège de Cardiologie et Médecine Vasculaire",
+      "ESC Guidelines 2024 Aortic Diseases"
+    ],
+    "constantes": {
+      "disponible_a_partir_de": 3,
+      "valeurs": {
+        "PA droite": "175/100 mmHg",
+        "PA gauche": "140/85 mmHg",
+        "FC": "102 bpm",
+        "SpO2": "96%",
+        "FR": "20/min"
+      }
+    }
   },
   {
     "id": "cardio-003",
@@ -135,7 +161,20 @@
       }
     ],
     "explication": "La fibrillation atriale est le trouble du rythme soutenu le plus fréquent. Le diagnostic est ECG-graphique. La prise en charge intègre le contrôle de fréquence ou du rythme, la prévention thromboembolique par anticoagulants (score CHA₂DS₂-VASc ≥ 2 chez la femme) et la recherche de facteurs déclenchants.",
-    "references": ["Collège de Cardiologie et Médecine Vasculaire", "ESC Guidelines 2020 AF"]
+    "references": [
+      "Collège de Cardiologie et Médecine Vasculaire",
+      "ESC Guidelines 2020 AF"
+    ],
+    "constantes": {
+      "disponible_a_partir_de": 2,
+      "valeurs": {
+        "FC": "118 bpm",
+        "PA": "148/88 mmHg",
+        "SpO2": "97%",
+        "FR": "16/min",
+        "Temperature": "37.0°C"
+      }
+    }
   },
   {
     "id": "cardio-004",
@@ -181,7 +220,20 @@
       }
     ],
     "explication": "La tamponnade est une compression cardiaque par épanchement péricardique sous pression, constituant une urgence hémodynamique. La triade de Beck (hypotension, turgescence jugulaire, bruits du cœur assourdis) est évocatrice. Le diagnostic est confirmé à l'ETT. Le traitement est la péricardocentèse en urgence.",
-    "references": ["Collège de Cardiologie et Médecine Vasculaire", "ESC Guidelines 2015 Pericardial Diseases"]
+    "references": [
+      "Collège de Cardiologie et Médecine Vasculaire",
+      "ESC Guidelines 2015 Pericardial Diseases"
+    ],
+    "constantes": {
+      "disponible_a_partir_de": 3,
+      "valeurs": {
+        "PA": "88/70 mmHg",
+        "FC": "122 bpm",
+        "SpO2": "93%",
+        "FR": "26/min",
+        "Pouls paradoxal": "> 15 mmHg"
+      }
+    }
   },
   {
     "id": "cardio-005",
@@ -227,7 +279,20 @@
       }
     ],
     "explication": "La décompensation d'insuffisance cardiaque est la première cause d'hospitalisation après 65 ans en France. Le diagnostic repose sur la clinique (dyspnée, crépitants, galop), le BNP élevé et la radio thoracique. La recherche du facteur déclenchant (ici arrêt du diurétique et excès sodé) est systématique.",
-    "references": ["Collège de Cardiologie et Médecine Vasculaire", "ESC Guidelines 2021 Heart Failure"]
+    "references": [
+      "Collège de Cardiologie et Médecine Vasculaire",
+      "ESC Guidelines 2021 Heart Failure"
+    ],
+    "constantes": {
+      "disponible_a_partir_de": 2,
+      "valeurs": {
+        "SpO2": "84%",
+        "FC": "108 bpm",
+        "PA": "165/95 mmHg",
+        "FR": "32/min",
+        "Temperature": "37.1°C"
+      }
+    }
   },
   {
     "id": "cardio-006",
@@ -273,7 +338,20 @@
       }
     ],
     "explication": "L'endocardite infectieuse du cœur droit chez le toxicomane IV est classiquement due à S. aureus sur valve tricuspide native. Les critères de Duke modifiés permettent le diagnostic. Les signes périphériques (Osler, Janeway, Roth) sont inconstants mais pathognomoniques. La prise en charge est médico-chirurgicale.",
-    "references": ["Collège de Cardiologie et Médecine Vasculaire", "ESC Guidelines 2023 Endocarditis"]
+    "references": [
+      "Collège de Cardiologie et Médecine Vasculaire",
+      "ESC Guidelines 2023 Endocarditis"
+    ],
+    "constantes": {
+      "disponible_a_partir_de": 2,
+      "valeurs": {
+        "FC": "102 bpm",
+        "PA": "110/70 mmHg",
+        "SpO2": "96%",
+        "FR": "20/min",
+        "Temperature": "39.5°C"
+      }
+    }
   },
   {
     "id": "cardio-007",
@@ -319,7 +397,20 @@
       }
     ],
     "explication": "La péricardite aiguë est le plus souvent virale (post-syndrome grippal). Le diagnostic repose sur ≥ 2 critères parmi : douleur thoracique typique, frottement péricardique, sus-décalage ST diffus en selle, épanchement péricardique nouveau. Le traitement associe AINS et colchicine pendant 3 mois pour prévenir les récidives.",
-    "references": ["Collège de Cardiologie et Médecine Vasculaire", "ESC Guidelines 2015 Pericardial Diseases"]
+    "references": [
+      "Collège de Cardiologie et Médecine Vasculaire",
+      "ESC Guidelines 2015 Pericardial Diseases"
+    ],
+    "constantes": {
+      "disponible_a_partir_de": 2,
+      "valeurs": {
+        "FC": "82 bpm",
+        "PA": "122/74 mmHg",
+        "SpO2": "99%",
+        "FR": "16/min",
+        "Temperature": "37.0°C"
+      }
+    }
   },
   {
     "id": "cardio-008",
@@ -365,7 +456,20 @@
       }
     ],
     "explication": "La tachycardie ventriculaire soutenue est une urgence rythmologique, survenant ici sur cardiopathie ischémique cicatricielle (contexte le plus fréquent). La dissociation AV, les captures et fusions sont pathognomoniques. Le traitement immédiat dépend de la tolérance hémodynamique : cardioversion électrique si instable, amiodarone IV si stable.",
-    "references": ["Collège de Cardiologie et Médecine Vasculaire", "ESC Guidelines 2022 Ventricular Arrhythmias"]
+    "references": [
+      "Collège de Cardiologie et Médecine Vasculaire",
+      "ESC Guidelines 2022 Ventricular Arrhythmias"
+    ],
+    "constantes": {
+      "disponible_a_partir_de": 3,
+      "valeurs": {
+        "PA": "92/60 mmHg",
+        "FC": "188 bpm",
+        "SpO2": "94%",
+        "FR": "22/min",
+        "Temperature": "37.3°C"
+      }
+    }
   },
   {
     "id": "cardio-009",
@@ -411,7 +515,20 @@
       }
     ],
     "explication": "Le rétrécissement aortique calcifié du sujet âgé est la valvulopathie la plus fréquente en Europe. La triade symptomatique (angor, syncope d'effort, insuffisance cardiaque) signe un pronostic réservé sans traitement. Le remplacement valvulaire aortique (chirurgical ou TAVI selon le profil de risque) est indiqué dès l'apparition des symptômes.",
-    "references": ["Collège de Cardiologie et Médecine Vasculaire", "ESC Guidelines 2021 Valvular Heart Disease"]
+    "references": [
+      "Collège de Cardiologie et Médecine Vasculaire",
+      "ESC Guidelines 2021 Valvular Heart Disease"
+    ],
+    "constantes": {
+      "disponible_a_partir_de": 3,
+      "valeurs": {
+        "FC": "68 bpm",
+        "PA": "145/85 mmHg",
+        "SpO2": "97%",
+        "FR": "16/min",
+        "Temperature": "36.8°C"
+      }
+    }
   },
   {
     "id": "cardio-010",
@@ -457,6 +574,19 @@
       }
     ],
     "explication": "Le bloc auriculo-ventriculaire complet (BAV III) est caractérisé par une dissociation AV totale avec rythme d'échappement jonctionnel ou ventriculaire. Ici, probablement favorisé par le vérapamil (inhibiteur calcique bradycardisant). La prise en charge inclut l'arrêt du médicament en cause et la mise en place d'un stimulateur cardiaque si le BAV est intrinsèque et persistant.",
-    "references": ["Collège de Cardiologie et Médecine Vasculaire", "ESC Guidelines 2021 Cardiac Pacing"]
+    "references": [
+      "Collège de Cardiologie et Médecine Vasculaire",
+      "ESC Guidelines 2021 Cardiac Pacing"
+    ],
+    "constantes": {
+      "disponible_a_partir_de": 2,
+      "valeurs": {
+        "PA": "100/65 mmHg",
+        "FC": "38 bpm",
+        "SpO2": "96%",
+        "FR": "16/min",
+        "Temperature": "36.9°C"
+      }
+    }
   }
 ]

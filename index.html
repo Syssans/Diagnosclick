@@ -4,151 +4,133 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Diagnostick</title>
-  <meta name="description" content="Trouvez le diagnostic médical en 6 indices. Un nouveau cas chaque jour." />
+  <meta name="description" content="Trouvez le diagnostic medical en 6 indices. Un nouveau cas chaque jour." />
   <style>
     :root {
-      --bg-primary: #1a1a18;
-      --bg-secondary: #242422;
-      --bg-tertiary: #2e2e2c;
-      --text-primary: #f5f4ee;
-      --text-secondary: #a8a69a;
-      --text-tertiary: #6e6c64;
-      --border-subtle: rgba(222, 220, 209, 0.12);
-      --border-mid: rgba(222, 220, 209, 0.25);
-      --border-strong: rgba(222, 220, 209, 0.4);
-      --radius-sm: 6px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --radius-full: 9999px;
-      --tag-anamnese-bg: rgba(37, 62, 95, 0.7);
-      --tag-anamnese-text: #80aadd;
-      --tag-clinique-bg: rgba(27, 70, 20, 0.7);
-      --tag-clinique-text: #7ab948;
-      --tag-paraclinique-bg: rgba(72, 58, 15, 0.7);
-      --tag-paraclinique-text: #d1a041;
-      --tag-image-bg: rgba(55, 45, 90, 0.7);
-      --tag-image-text: #afa9ec;
-      --green: #4a7a1a;
-      --green-light: #c0dd97;
-      --green-bg: rgba(27, 70, 20, 0.4);
-      --red: #a32d2d;
-      --red-light: #f7c1c1;
-      --red-bg: rgba(96, 42, 40, 0.4);
+      --bg-primary: #1a1a18; --bg-secondary: #242422; --bg-tertiary: #2e2e2c;
+      --text-primary: #f5f4ee; --text-secondary: #a8a69a; --text-tertiary: #6e6c64;
+      --border-subtle: rgba(222,220,209,0.12); --border-mid: rgba(222,220,209,0.25); --border-strong: rgba(222,220,209,0.4);
+      --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-full:9999px;
+      --tag-anamnese-bg:rgba(37,62,95,0.7); --tag-anamnese-text:#80aadd;
+      --tag-clinique-bg:rgba(27,70,20,0.7); --tag-clinique-text:#7ab948;
+      --tag-paraclinique-bg:rgba(72,58,15,0.7); --tag-paraclinique-text:#d1a041;
+      --tag-image-bg:rgba(55,45,90,0.7); --tag-image-text:#afa9ec;
+      --green:#4a7a1a; --green-light:#c0dd97; --green-bg:rgba(27,70,20,0.4);
+      --red:#a32d2d; --red-light:#f7c1c1; --red-bg:rgba(96,42,40,0.4);
       --neutral-bg: #5c461b;
       --neutral-light:#d1a041;
       --yellow: #ffd000;
     }
     @media (prefers-color-scheme: light) {
       :root {
-        --bg-primary: #ffffff;
-        --bg-secondary: #f5f4ed;
-        --bg-tertiary: #eeede6;
-        --text-primary: #14140f;
-        --text-secondary: #3d3d3a;
-        --text-tertiary: #73726c;
-        --border-subtle: rgba(31, 30, 29, 0.1);
-        --border-mid: rgba(31, 30, 29, 0.2);
-        --border-strong: rgba(31, 30, 29, 0.35);
-        --tag-anamnese-bg: #d6e4f6;
-        --tag-anamnese-text: #0c447c;
-        --tag-clinique-bg: #d4edda;
-        --tag-clinique-text: #085041;
-        --tag-paraclinique-bg: #faeeda;
-        --tag-paraclinique-text: #633806;
-        --tag-image-bg: #eeedfe;
-        --tag-image-text: #3c3489;
-        --green: #3b6d11;
-        --green-light: #639922;
-        --green-bg: #eaf3de;
-        --red: #791f1f;
-        --red-light: #a32d2d;
-        --red-bg: #fcebeb;
+        --bg-primary:#fff; --bg-secondary:#f5f4ed; --bg-tertiary:#eeede6;
+        --text-primary:#14140f; --text-secondary:#3d3d3a; --text-tertiary:#73726c;
+        --border-subtle:rgba(31,30,29,0.1); --border-mid:rgba(31,30,29,0.2); --border-strong:rgba(31,30,29,0.35);
+        --tag-anamnese-bg:#d6e4f6; --tag-anamnese-text:#0c447c;
+        --tag-clinique-bg:#d4edda; --tag-clinique-text:#085041;
+        --tag-paraclinique-bg:#faeeda; --tag-paraclinique-text:#633806;
+        --tag-image-bg:#eeedfe; --tag-image-text:#3c3489;
+        --green:#3b6d11; --green-light:#639922; --green-bg:#eaf3de;
+        --red:#791f1f; --red-light:#a32d2d; --red-bg:#fcebeb;
         --neutral-bg: #faeeda;
         --neutral-light:#633806;
       }
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing:border-box; margin:0; padding:0; }
     body { font-family: 'Inter', sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
-    #app { max-width: 800px; margin: 0 auto; padding: 2rem 1rem 3rem; }
+    #app { max-width:800px; margin:0 auto; padding:2rem 1rem 3rem; }
 
-    .header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 0.5px solid var(--border-subtle); }
-    .header h1 { font-size: 40px; font-weight: 700; text-transform: uppercase; }
-    .header-sub { font-size: 20px; color: var(--text-secondary); margin-top: 10px; }
-    .header-nav { margin-top: 10px; }
-    .header-nav a { font-size: 12px; color: var(--text-tertiary); text-decoration: none; border: 0.5px solid var(--border-subtle); border-radius: var(--radius-full); padding: 3px 10px; transition: all 0.1s; }
-    .header-nav a:hover { color: var(--text-secondary); border-color: var(--border-mid); }
-    .header-stats { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem; }
-    .stat { text-align: center; }
-    .stat-value { font-size: 18px; font-weight: 600; }
-    .stat-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
+    .header { text-align:center; margin-bottom:2rem; padding-bottom:1.5rem; border-bottom:0.5px solid var(--border-subtle); }
+    .header h1 { font-size:28px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; }
+    .header-sub { font-size:13px; color:var(--text-tertiary); margin-top:5px; }
+    .header-nav { margin-top:10px; }
+    .header-nav a { font-size:12px; color:var(--text-tertiary); text-decoration:none; border:0.5px solid var(--border-subtle); border-radius:var(--radius-full); padding:3px 10px; }
+    .header-nav a:hover { color:var(--text-secondary); border-color:var(--border-mid); }
+    .header-stats { display:flex; justify-content:center; gap:1.5rem; margin-top:1rem; }
+    .stat { text-align:center; }
+    .stat-value { font-size:18px; font-weight:600; }
+    .stat-label { font-size:11px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.05em; }
 
-    .tries { display: flex; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
-    .try-dot { width: 30px; height: 30px; border-radius: 50%; border: 0.5px solid var(--border-mid); background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--text-tertiary); transition: all 0.15s; }
-    .try-dot.used { background: var(--red-bg); border-color: var(--red); color: var(--red-light); }
-    .try-dot.current { border-color: var(--border-strong); background: var(--bg-tertiary); color: var(--text-primary); }
-    .try-dot.correct { background: var(--green-bg); border-color: var(--green); color: var(--green-light); }
-    .try-dot.indice { background: var(--neutral-bg); border-color: var(--yellow); color: var(--neutral-light); }
+    .tries { display:flex; gap:8px; justify-content:center; margin-bottom:1.5rem; }
+    .try-dot { width:30px; height:30px; border-radius:50%; border:0.5px solid var(--border-mid); background:var(--bg-secondary); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; color:var(--text-tertiary); transition:all 0.15s; }
+    .try-dot.used { background:var(--red-bg); border-color:var(--red); color:var(--red-light); }
+    .try-dot.current { border-color:var(--border-strong); background:var(--bg-tertiary); color:var(--text-primary); }
+    .try-dot.correct { background:var(--green-bg); border-color:var(--green); color:var(--green-light); }
 
-    .indices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
-    .indice-card { background: var(--bg-secondary); border: 0.5px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 0.9rem 1.1rem; animation: fadeSlide 0.2s ease; }
-    @keyframes fadeSlide { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-    .indice-header { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
-    .indice-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-full); text-transform: uppercase; letter-spacing: 0.04em; }
-    .tag-anamnese { background: var(--tag-anamnese-bg); color: var(--tag-anamnese-text); }
-    .tag-clinique { background: var(--tag-clinique-bg); color: var(--tag-clinique-text); }
-    .tag-paraclinique { background: var(--tag-paraclinique-bg); color: var(--tag-paraclinique-text); }
-    .tag-image { background: var(--tag-image-bg); color: var(--tag-image-text); }
-    .indice-num { font-size: 11px; color: var(--text-tertiary); }
-    .indice-text { font-size: 1.1rem; line-height: 1.65; font-weight: 600; }
-    .indice-image { width: 100%; border-radius: var(--radius-md); margin-top: 10px; background: var(--bg-tertiary); height: 180px; display: flex; align-items: center; justify-content: center; border: 0.5px solid var(--border-subtle); }
-    .indice-image img { max-width: 100%; max-height: 100%; border-radius: var(--radius-md); object-fit: contain; }
-    .indice-image span { font-size: 12px; color: var(--text-tertiary); }
-    .indice-locked-card { background: var(--bg-secondary); border: 0.5px dashed var(--border-subtle); border-radius: var(--radius-lg); padding: 0.7rem 1.1rem; display: flex; align-items: center; gap: 8px; opacity: 0.6; }
-    .indice-locked-text { font-size: 13px; color: var(--text-tertiary); }
-    .lock-icon { width: 12px; height: 12px; opacity: 0.3; flex-shrink: 0; }
+    .indices { display:flex; flex-direction:column; gap:8px; margin-bottom:1rem; }
+    .indice-card { background:var(--bg-secondary); border:0.5px solid var(--border-subtle); border-radius:var(--radius-lg); padding:0.9rem 1.1rem; animation:fadeSlide 0.2s ease; }
+    @keyframes fadeSlide { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+    .indice-header { display:flex; align-items:center; gap:8px; margin-bottom:7px; }
+    .indice-tag { font-size:10px; font-weight:600; padding:2px 8px; border-radius:var(--radius-full); text-transform:uppercase; letter-spacing:0.04em; }
+    .tag-anamnese { background:var(--tag-anamnese-bg); color:var(--tag-anamnese-text); }
+    .tag-clinique { background:var(--tag-clinique-bg); color:var(--tag-clinique-text); }
+    .tag-paraclinique { background:var(--tag-paraclinique-bg); color:var(--tag-paraclinique-text); }
+    .tag-image { background:var(--tag-image-bg); color:var(--tag-image-text); }
+    .indice-num { font-size:11px; color:var(--text-tertiary); }
+    .indice-text { font-size:14px; line-height:1.65; }
+    .indice-image { width:100%; border-radius:var(--radius-md); margin-top:10px; background:var(--bg-tertiary); height:180px; display:flex; align-items:center; justify-content:center; border:0.5px solid var(--border-subtle); }
+    .indice-image img { max-width:100%; max-height:100%; border-radius:var(--radius-md); object-fit:contain; }
+    .indice-image span { font-size:12px; color:var(--text-tertiary); }
+    .indice-locked-card { background:var(--bg-secondary); border:0.5px dashed var(--border-subtle); border-radius:var(--radius-lg); padding:0.7rem 1.1rem; display:flex; align-items:center; gap:8px; opacity:0.6; }
+    .indice-locked-text { font-size:13px; color:var(--text-tertiary); }
+    .lock-icon { width:12px; height:12px; opacity:0.3; flex-shrink:0; }
 
-    .input-zone { position: relative; background: var(--bg-secondary); border: 0.5px solid var(--border-mid); border-radius: var(--radius-lg); padding: 0.9rem; }
-    .input-row { display: flex; gap: 8px; }
-    .diag-input { flex: 1; font-size: 14px; padding: 0 12px; height: 38px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); outline: none; font-family: inherit; }
-    .diag-input::placeholder { color: var(--text-tertiary); }
-    .diag-input:focus { border-color: var(--border-strong); }
-    .btn-valider { height: 38px; padding: 0 16px; font-size: 13px; font-weight: 600; border-radius: var(--radius-md); border: 0.5px solid var(--border-strong); background: var(--text-primary); color: var(--bg-primary); cursor: pointer; white-space: nowrap; font-family: inherit; transition: opacity 0.1s; }
-    .btn-valider:hover { opacity: 0.85; }
-    .btn-valider:disabled { opacity: 0.3; cursor: not-allowed; }
-    .btn-passer { height: 38px; padding: 0 12px; font-size: 13px; border-radius: var(--radius-md); border: 0.5px solid var(--border-subtle); background: transparent; color: var(--text-secondary); cursor: pointer; font-family: inherit; transition: background 0.1s; }
-    .btn-passer:hover { background: var(--bg-tertiary); }
-    .dropdown { position: absolute; top: calc(0.9rem + 38px + 8px); left: 0.9rem; right: 0.9rem; background: var(--bg-primary); border: 0.5px solid var(--border-mid); border-radius: var(--radius-md); z-index: 10; overflow: hidden; }
-    .dropdown-item { padding: 9px 12px; font-size: 14px; color: var(--text-primary); cursor: pointer; font-family: inherit; }
-    .dropdown-item:hover { background: var(--bg-secondary); }
-    .feedback { margin-top: 8px; padding: 8px 12px; border-radius: var(--radius-md); font-size: 13px; line-height: 1.5; }
-    .feedback.wrong { background: var(--red-bg); color: var(--red-light); border: 0.5px solid var(--red); }
-    .feedback.correct { background: var(--green-bg); color: var(--green-light); border: 0.5px solid var(--green); }
-    .feedback.reveal { background: var(--neutral-bg); color: var(--text-secondary); border: 0.5px solid var(--border-subtle); }
+    .constantes-zone { margin-bottom:1.25rem; }
+    .btn-constantes { width:100%; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--bg-secondary); border:0.5px solid var(--border-subtle); border-radius:var(--radius-md); font-size:13px; color:var(--text-secondary); cursor:pointer; font-family:inherit; transition:all 0.15s; }
+    .btn-constantes:not([disabled]):hover { border-color:var(--border-mid); color:var(--text-primary); }
+    .btn-constantes[disabled] { opacity:0.4; cursor:not-allowed; }
+    .btn-constantes-left { display:flex; align-items:center; gap:8px; }
+    .constantes-chevron { font-size:10px; transition:transform 0.2s; display:inline-block; }
+    .constantes-chevron.open { transform:rotate(180deg); }
+    .constantes-panel { background:var(--bg-secondary); border:0.5px solid var(--border-subtle); border-top:none; border-radius:0 0 var(--radius-md) var(--radius-md); overflow:hidden; display:none; }
+    .constantes-panel.open { display:block; }
+    .constantes-table { width:100%; border-collapse:collapse; }
+    .constantes-table tr { border-bottom:0.5px solid var(--border-subtle); }
+    .constantes-table tr:last-child { border-bottom:none; }
+    .constantes-table td { padding:8px 14px; font-size:13px; }
+    .constantes-table td:first-child { color:var(--text-secondary); width:45%; }
+    .constantes-table td:last-child { color:var(--text-primary); font-weight:500; }
 
-    /* RÉSULTAT */
-    .result-banner { text-align: center; padding: 1.75rem; background: var(--bg-secondary); border-radius: var(--radius-lg); border: 0.5px solid var(--border-subtle); margin-top: 1rem; }
-    .result-banner h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
-    .result-banner p { font-size: 13px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.6; }
-    .result-emoji { font-size: 18px; letter-spacing: 3px; margin-bottom: 14px; }
-    .countdown-block { margin: 14px 0; }
-    .countdown-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
-    .countdown-time { font-size: 24px; font-weight: 700; letter-spacing: 0.06em; font-variant-numeric: tabular-nums; }
-    .result-actions { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
-    .btn-partager { font-size: 13px; font-weight: 500; padding: 8px 18px; border-radius: var(--radius-md); border: 0.5px solid var(--border-mid); background: var(--bg-primary); color: var(--text-primary); cursor: pointer; font-family: inherit; transition: background 0.1s; }
-    .btn-partager:hover { background: var(--bg-tertiary); }
-    .btn-archives-link { font-size: 13px; padding: 8px 18px; border-radius: var(--radius-md); border: 0.5px solid var(--border-subtle); background: transparent; color: var(--text-secondary); cursor: pointer; font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; transition: background 0.1s; }
-    .btn-archives-link:hover { background: var(--bg-tertiary); }
-    .share-confirm { font-size: 12px; color: var(--text-tertiary); margin-top: 8px; }
+    .input-zone { position:relative; background:var(--bg-secondary); border:0.5px solid var(--border-mid); border-radius:var(--radius-lg); padding:0.9rem; }
+    .input-row { display:flex; gap:8px; }
+    .diag-input { flex:1; font-size:14px; padding:0 12px; height:38px; border-radius:var(--radius-md); border:0.5px solid var(--border-mid); background:var(--bg-primary); color:var(--text-primary); outline:none; font-family:inherit; }
+    .diag-input::placeholder { color:var(--text-tertiary); }
+    .diag-input:focus { border-color:var(--border-strong); }
+    .btn-valider { height:38px; padding:0 16px; font-size:13px; font-weight:600; border-radius:var(--radius-md); border:0.5px solid var(--border-strong); background:var(--text-primary); color:var(--bg-primary); cursor:pointer; white-space:nowrap; font-family:inherit; transition:opacity 0.1s; }
+    .btn-valider:hover { opacity:0.85; }
+    .btn-valider:disabled { opacity:0.3; cursor:not-allowed; }
+    .btn-passer { height:38px; padding:0 12px; font-size:13px; border-radius:var(--radius-md); border:0.5px solid var(--border-subtle); background:transparent; color:var(--text-secondary); cursor:pointer; font-family:inherit; }
+    .btn-passer:hover { background:var(--bg-tertiary); }
+    .dropdown { position:absolute; top:calc(0.9rem + 38px + 8px); left:0.9rem; right:0.9rem; background:var(--bg-primary); border:0.5px solid var(--border-mid); border-radius:var(--radius-md); z-index:10; overflow:hidden; }
+    .dropdown-item { padding:9px 12px; font-size:14px; color:var(--text-primary); cursor:pointer; }
+    .dropdown-item:hover { background:var(--bg-secondary); }
+    .feedback { margin-top:8px; padding:8px 12px; border-radius:var(--radius-md); font-size:13px; line-height:1.5; }
+    .feedback.wrong { background:var(--red-bg); color:var(--red-light); border:0.5px solid var(--red); }
+    .feedback.correct { background:var(--green-bg); color:var(--green-light); border:0.5px solid var(--green); }
+    .feedback.reveal { background:var(--neutral-bg); color:var(--text-secondary); border:0.5px solid var(--border-subtle); }
 
-    /* DÉJÀ JOUÉ */
-    .deja-joue { text-align: center; padding: 2rem 1.5rem; background: var(--bg-secondary); border-radius: var(--radius-lg); border: 0.5px solid var(--border-subtle); }
-    .deja-joue h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-    .deja-joue p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 6px; }
+    .result-banner { text-align:center; padding:1.75rem; background:var(--bg-secondary); border-radius:var(--radius-lg); border:0.5px solid var(--border-subtle); margin-top:1rem; }
+    .result-banner h2 { font-size:20px; font-weight:700; margin-bottom:6px; }
+    .result-banner p { font-size:13px; color:var(--text-secondary); margin-bottom:14px; line-height:1.6; }
+    .result-emoji { font-size:18px; letter-spacing:3px; margin-bottom:14px; }
+    .countdown-block { margin:14px 0; }
+    .countdown-label { font-size:11px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
+    .countdown-time { font-size:24px; font-weight:700; letter-spacing:0.06em; font-variant-numeric:tabular-nums; }
+    .result-actions { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:14px; }
+    .btn-partager { font-size:13px; font-weight:500; padding:8px 18px; border-radius:var(--radius-md); border:0.5px solid var(--border-mid); background:var(--bg-primary); color:var(--text-primary); cursor:pointer; font-family:inherit; }
+    .btn-partager:hover { background:var(--bg-tertiary); }
+    .btn-archives-link { font-size:13px; padding:8px 18px; border-radius:var(--radius-md); border:0.5px solid var(--border-subtle); background:transparent; color:var(--text-secondary); cursor:pointer; font-family:inherit; text-decoration:none; display:inline-flex; align-items:center; }
+    .btn-archives-link:hover { background:var(--bg-tertiary); }
+    .share-confirm { font-size:12px; color:var(--text-tertiary); margin-top:8px; }
 
-    .footer { text-align: center; margin-top: 2.5rem; padding-top: 1.25rem; border-top: 0.5px solid var(--border-subtle); }
-    .footer p { font-size: 12px; color: var(--text-tertiary); line-height: 1.6; }
-    .footer a { color: var(--text-tertiary); text-decoration: none; }
-    .footer a:hover { color: var(--text-secondary); }
+    .deja-joue { text-align:center; padding:2rem 1.5rem; background:var(--bg-secondary); border-radius:var(--radius-lg); border:0.5px solid var(--border-subtle); }
+    .deja-joue h2 { font-size:20px; font-weight:700; margin-bottom:8px; }
+    .deja-joue p { font-size:13px; color:var(--text-secondary); line-height:1.6; margin-bottom:6px; }
+
+    .footer { text-align:center; margin-top:2.5rem; padding-top:1.25rem; border-top:0.5px solid var(--border-subtle); }
+    .footer p { font-size:12px; color:var(--text-tertiary); line-height:1.6; }
+    .footer a { color:var(--text-tertiary); text-decoration:none; }
+    .footer a:hover { color:var(--text-secondary); }
   </style>
 </head>
 <body>
@@ -156,9 +138,7 @@
   <div class="header">
     <h1>Diagnostick</h1>
     <p class="header-sub"><span id="date-label"></span></p>
-    <div class="header-nav">
-      <a href="./archives.html">Archives</a>
-    </div>
+    <div class="header-nav"><a href="./archives.html">Archives</a></div>
     <div class="header-stats">
       <div class="stat"><div class="stat-value" id="stat-joues">0</div><div class="stat-label">Joués</div></div>
       <div class="stat"><div class="stat-value" id="stat-reussis">0%</div><div class="stat-label">Réussite</div></div>
@@ -169,6 +149,20 @@
   <div id="game-container">
     <div class="tries" id="tries-row"></div>
     <div class="indices" id="indices-container"></div>
+
+    <div class="constantes-zone" id="constantes-zone" style="display:none;">
+      <button class="btn-constantes" id="btn-constantes" disabled>
+        <span class="btn-constantes-left">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><rect x="1" y="10" width="14" height="5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 10V6a4 4 0 018 0v4" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="13" r="1" fill="currentColor"/></svg>
+          <span id="constantes-btn-label">Constantes disponibles &agrave; l'indice <span id="constantes-seuil"></span></span>
+        </span>
+        <span class="constantes-chevron" id="constantes-chevron">&#9660;</span>
+      </button>
+      <div class="constantes-panel" id="constantes-panel">
+        <table class="constantes-table" id="constantes-table"></table>
+      </div>
+    </div>
+
     <div class="input-zone" id="input-zone">
       <div class="input-row">
         <input class="diag-input" id="diag-input" type="text" placeholder="Entrez un diagnostic..." autocomplete="off" />
@@ -182,31 +176,33 @@
   </div>
 
   <div class="footer">
-    <p><i>Diagnostick ne se substitue en aucun cas à un avis médical professionnel.</i></p>
-    <p style="margin-top: 6px;"><a href="https://x.com/syssans" target="_blank">@Syssans</a></p>
+    <p><i>Diagnostick ne se substitue en aucun cas à un avis médical professionnel.</i></p>    <p style="margin-top:6px;"><a href="https://github.com/syssans" target="_blank">@Syssans</a></p>
   </div>
 </div>
 
 <script>
-  let DIAGNOSTICS = [
-    "Embolie pulmonaire","Pneumothorax spontané","Pneumonie franche lobaire aiguë",
-    "Pleurésie","Angor instable","Épanchement péricardique","Exacerbation de BPCO",
+  var DIAGNOSTICS = [
+    "Embolie pulmonaire","Pneumothorax spontane","Pneumonie franche lobaire aigue",
+    "Pleuresia","Angor instable","Epanchement pericardique","Exacerbation de BPCO",
     "Crise d'asthme","Pneumopathie interstitielle"
   ];
 
-  let CAS = null;
-  let essaiActuel = 0;
-  let indicesVisibles = 1;
-  let termine = false;
-  let countdownInterval = null;
-  const MAX_ESSAIS = 6;
+  var CAS = null;
+  var essaiActuel = 0;
+  var indicesVisibles = 1;
+  var termine = false;
+  var countdownInterval = null;
+  var MAX_ESSAIS = 6;
+  var KEY_STATS   = 'diagnostick_stats';
+  var KEY_SESSION = 'diagnostick_session';
 
-  const KEY_STATS   = 'diagnostick_stats';
-  const KEY_SESSION = 'diagnostick_session';
+  function el(id) { return document.getElementById(id); }
 
   function getTodayKey() {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    var d = new Date();
+    var m = String(d.getMonth()+1).padStart(2,'0');
+    var j = String(d.getDate()).padStart(2,'0');
+    return d.getFullYear() + '-' + m + '-' + j;
   }
 
   function getDateLabel() {
@@ -214,293 +210,325 @@
   }
 
   function secondsUntilMidnight() {
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0);
+    var now = new Date();
+    var midnight = new Date(now);
+    midnight.setHours(24,0,0,0);
     return Math.floor((midnight - now) / 1000);
   }
 
-  function formatCountdown(seconds) {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  function formatCountdown(s) {
+    var h = Math.floor(s/3600);
+    var m = Math.floor((s%3600)/60);
+    var sec = s%60;
+    return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
   }
 
   function getStats() {
-    try { return JSON.parse(localStorage.getItem(KEY_STATS)) || { joues:0, reussis:0, streak:0, lastDate:null }; }
-    catch { return { joues:0, reussis:0, streak:0, lastDate:null }; }
+    try { return JSON.parse(localStorage.getItem(KEY_STATS)) || {joues:0,reussis:0,streak:0,lastDate:null}; }
+    catch(e) { return {joues:0,reussis:0,streak:0,lastDate:null}; }
   }
 
-  function saveStats(s) {
-    try { localStorage.setItem(KEY_STATS, JSON.stringify(s)); } catch {}
-  }
+  function saveStats(s) { try { localStorage.setItem(KEY_STATS, JSON.stringify(s)); } catch(e) {} }
 
   function updateStats(succes) {
-    const stats = getStats();
-    const today = getTodayKey();
-    const yesterday = (() => { const d = new Date(); d.setDate(d.getDate()-1); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })();
+    var stats = getStats();
+    var d = new Date(); d.setDate(d.getDate()-1);
+    var yesterday = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
     stats.joues++;
-    if (succes) {
-      stats.reussis++;
-      stats.streak = stats.lastDate === yesterday ? stats.streak + 1 : 1;
-    } else {
-      stats.streak = 0;
-    }
-    stats.lastDate = today;
+    if (succes) { stats.reussis++; stats.streak = stats.lastDate === yesterday ? stats.streak+1 : 1; }
+    else { stats.streak = 0; }
+    stats.lastDate = getTodayKey();
     saveStats(stats);
     renderStats();
   }
 
   function renderStats() {
-    const s = getStats();
-    document.getElementById('stat-joues').textContent = s.joues;
-    document.getElementById('stat-reussis').textContent = s.joues > 0 ? Math.round(s.reussis / s.joues * 100) + '%' : '0%';
-    document.getElementById('stat-streak').textContent = s.streak;
+    var s = getStats();
+    el('stat-joues').textContent = s.joues;
+    el('stat-reussis').textContent = s.joues > 0 ? Math.round(s.reussis/s.joues*100)+'%' : '0%';
+    el('stat-streak').textContent = s.streak;
   }
 
-  function getSession() {
-    try { return JSON.parse(localStorage.getItem(KEY_SESSION)) || null; }
-    catch { return null; }
-  }
-
-  function saveSession(data) {
-    try { localStorage.setItem(KEY_SESSION, JSON.stringify({ date: getTodayKey(), ...data })); } catch {}
-  }
+  function getSession() { try { return JSON.parse(localStorage.getItem(KEY_SESSION)) || null; } catch(e) { return null; } }
+  function saveSession(data) { try { localStorage.setItem(KEY_SESSION, JSON.stringify(data)); } catch(e) {} }
 
   function joursDepuis(dateStr) {
-    const start = new Date(dateStr);
-    start.setHours(0, 0, 0, 0);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return Math.floor((today - start) / (1000 * 60 * 60 * 24));
+    var start = new Date(dateStr); start.setHours(0,0,0,0);
+    var today = new Date(); today.setHours(0,0,0,0);
+    return Math.floor((today - start) / 86400000);
   }
 
   function getCasDuJour(data, config) {
-    const offset = joursDepuis(config.start_date);
-    const index = (config.start_index + offset) % data.length;
-    return { cas: data[index], index };
-  }
-
-  async function chargerCas() {
-      const [resData, resConfig] = await Promise.all([
-        fetch('./diagnostick_database.json'),
-        fetch('./config.json')
-      ]);
-      const data = await resData.json();
-      const config = await resConfig.json();
-      DIAGNOSTICS = [...new Set([...DIAGNOSTICS, ...data.map(c => c.diagnostic)])];
-      const { cas } = getCasDuJour(data, config);
-      CAS = transformerCas(cas);
-
-
-    const session = getSession();
-    if (session && session.date === getTodayKey()) {
-      afficherDejaJoue(session);
-      return;
-    }
-
-    renderTries();
-    renderIndices();
+    var offset = joursDepuis(config.start_date);
+    var index = (config.start_index + offset) % data.length;
+    return { cas: data[index], index: index };
   }
 
   function transformerCas(raw) {
-    return {
+    var c = {
       diagnostic: raw.diagnostic,
-      indices: raw.indices.sort((a,b) => a.ordre - b.ordre).map(ind => ({
-        type: ind.type,
-        text: ind.texte,
-        hasImage: ind.image !== null,
-        imageSrc: ind.image || null
-      }))
+      indices: raw.indices.slice().sort(function(a,b){return a.ordre-b.ordre;}).map(function(ind){
+        return { type:ind.type, text:ind.texte, hasImage:ind.image!==null, imageSrc:ind.image||null };
+      }),
+      constantes: raw.constantes || null
     };
+    return c;
   }
 
-
-//déjà joué
-  function afficherDejaJoue(session) {
-    document.getElementById('tries-row').style.display = 'none';
-    document.getElementById('indices-container').style.display = 'none';
-    document.getElementById('input-zone').style.display = 'none';
-
-    const emoji = session.emoji || '';
-    const zone = document.getElementById('result-zone');
-    zone.innerHTML = `
-      <div class="deja-joue">
-        <h2>${session.succes ? 'Bravo !' : 'Raté'}</h2>
-        <div class="result-emoji" style="margin: 10px 0;">${emoji}</div>
-        <p>${session.succes
-          ? `Diagnostic trouvé en ${session.essais} essai${session.essais > 1 ? 's' : ''} — <strong>${session.diagnostic}</strong>`
-          : `Le diagnostic était : <strong>${session.diagnostic}</strong>`
-        }</p>
-        <p>Vous avez déjà joué aujourd'hui.</p>
-        <div class="countdown-block">
-          <div class="countdown-label">Prochain cas dans</div>
-          <div class="countdown-time" id="countdown-time">--:--:--</div>
-        </div>
-        <div class="result-actions">
-          <button class="btn-partager" id="btn-partager-deja">Partager mon résultat</button>
-          <a class="btn-archives-link" href="./archives.html">Voir les archives</a>
-        </div>
-        <div class="share-confirm" id="share-confirm-deja" style="display:none;">Copié !</div>
-      </div>
-    `;
-
-    document.getElementById('btn-partager-deja').addEventListener('click', () => {
-      const txt = `Diagnostick — ${getDateLabel()}\n${emoji}\nhttps://syssans.github.io/Diagnostick/`;
-      navigator.clipboard.writeText(txt).catch(()=>{});
-      document.getElementById('share-confirm-deja').style.display = 'block';
+  function chargerCas() {
+    Promise.all([
+      fetch('./diagnostick_database.json').then(function(r){return r.json();}),
+      fetch('./config.json').then(function(r){return r.json();})
+    ]).then(function(results) {
+      var data = results[0];
+      var config = results[1];
+      data.forEach(function(c){ if(DIAGNOSTICS.indexOf(c.diagnostic)===-1) DIAGNOSTICS.push(c.diagnostic); });
+      var result = getCasDuJour(data, config);
+      CAS = transformerCas(result.cas);
+      var session = getSession();
+      if (session && session.date === getTodayKey()) { afficherDejaJoue(session); return; }
+      renderTries();
+      renderIndices();
+      renderConstantes();
+    }).catch(function() {
+      CAS = getCasDemo();
+      renderTries();
+      renderIndices();
+      renderConstantes();
     });
-
-    startCountdown();
   }
 
-  function startCountdown() {
-    function tick() {
-      const el = document.getElementById('countdown-time');
-      if (!el) { clearInterval(countdownInterval); return; }
-      el.textContent = formatCountdown(secondsUntilMidnight());
+
+
+  function renderConstantes() {
+    if (!CAS || !CAS.constantes) { el('constantes-zone').style.display = 'none'; return; }
+    el('constantes-zone').style.display = 'block';
+    var seuil = CAS.constantes.disponible_a_partir_de;
+    el('constantes-seuil').textContent = seuil;
+    mettreAJourConstantes();
+  }
+
+  function mettreAJourConstantes() {
+    if (!CAS || !CAS.constantes) return;
+    var seuil = CAS.constantes.disponible_a_partir_de;
+    var btn = el('btn-constantes');
+    if (indicesVisibles >= seuil || termine) {
+      btn.disabled = false;
+      el('constantes-btn-label').textContent = 'Constantes';
+    } else {
+      btn.disabled = true;
+      el('constantes-btn-label').innerHTML = 'Constantes disponibles a l\'indice ' + seuil;
     }
-    tick();
-    countdownInterval = setInterval(tick, 1000);
   }
 
-
-
+  el('btn-constantes').addEventListener('click', function() {
+    if (this.disabled) return;
+    var panel = el('constantes-panel');
+    var chevron = el('constantes-chevron');
+    var isOpen = panel.classList.contains('open');
+    if (isOpen) {
+      panel.classList.remove('open');
+      chevron.classList.remove('open');
+    } else {
+      var valeurs = CAS.constantes.valeurs;
+      var table = el('constantes-table');
+      table.innerHTML = '';
+      Object.keys(valeurs).forEach(function(k) {
+        var tr = document.createElement('tr');
+        var td1 = document.createElement('td'); td1.textContent = k;
+        var td2 = document.createElement('td'); td2.textContent = valeurs[k];
+        tr.appendChild(td1); tr.appendChild(td2);
+        table.appendChild(tr);
+      });
+      panel.classList.add('open');
+      chevron.classList.add('open');
+    }
+  });
 
   function renderTries() {
-    const row = document.getElementById('tries-row');
+    var row = el('tries-row');
     row.innerHTML = '';
-    for (let i = 0; i < MAX_ESSAIS; i++) {
-      const dot = document.createElement('div');
+    for (var i = 0; i < MAX_ESSAIS; i++) {
+      var dot = document.createElement('div');
       dot.className = 'try-dot' + (i < essaiActuel ? ' used' : i === essaiActuel ? ' current' : '');
-      dot.textContent = i + 1;
+      dot.textContent = i+1;
       row.appendChild(dot);
     }
   }
 
   function getTag(type) {
-    return ({
-      anamnese:    { cls:'tag-anamnese',    label:'Anamnèse' },
-      clinique:    { cls:'tag-clinique',    label:'Clinique' },
-      paraclinique:{ cls:'tag-paraclinique',label:'Paraclinique' },
-      image:       { cls:'tag-image',       label:'Imagerie' }
-    })[type] || { cls:'tag-anamnese', label:type };
+    var map = {
+      anamnese:{cls:'tag-anamnese',label:'Anamnese'},
+      clinique:{cls:'tag-clinique',label:'Clinique'},
+      paraclinique:{cls:'tag-paraclinique',label:'Paraclinique'},
+      image:{cls:'tag-image',label:'Imagerie'}
+    };
+    return map[type] || {cls:'tag-anamnese',label:type};
   }
 
   function renderIndices() {
     if (!CAS) return;
-    const container = document.getElementById('indices-container');
+    var container = el('indices-container');
     container.innerHTML = '';
-    CAS.indices.forEach((ind, i) => {
+    CAS.indices.forEach(function(ind, i) {
       if (i < indicesVisibles) {
-        const tag = getTag(ind.type);
-        const card = document.createElement('div');
+        var tag = getTag(ind.type);
+        var card = document.createElement('div');
         card.className = 'indice-card';
-        const imageHTML = ind.hasImage
-          ? `<div class="indice-image">${ind.imageSrc ? `<img src="./images/${ind.imageSrc}" alt="Imagerie" />` : '<span>Image à venir</span>'}</div>`
-          : '';
-        card.innerHTML = `
-          <div class="indice-header">
-            <span class="indice-tag ${tag.cls}">${tag.label}</span>
-            <span class="indice-num">Indice ${i+1}</span>
-          </div>
-          <div class="indice-text">${ind.text}</div>${imageHTML}`;
+        var header = document.createElement('div'); header.className = 'indice-header';
+        var tagEl = document.createElement('span'); tagEl.className = 'indice-tag ' + tag.cls; tagEl.textContent = tag.label;
+        var numEl = document.createElement('span'); numEl.className = 'indice-num'; numEl.textContent = 'Indice ' + (i+1);
+        header.appendChild(tagEl); header.appendChild(numEl);
+        var textEl = document.createElement('div'); textEl.className = 'indice-text'; textEl.textContent = ind.text;
+        card.appendChild(header); card.appendChild(textEl);
+        if (ind.hasImage) {
+          var imgDiv = document.createElement('div'); imgDiv.className = 'indice-image';
+          if (ind.imageSrc) {
+            var img = document.createElement('img'); img.src = './images/' + ind.imageSrc; img.alt = 'Imagerie';
+            imgDiv.appendChild(img);
+          } else {
+            var sp = document.createElement('span'); sp.textContent = 'Image a venir'; imgDiv.appendChild(sp);
+          }
+          card.appendChild(imgDiv);
+        }
         container.appendChild(card);
       } else {
-        const locked = document.createElement('div');
-        locked.className = 'indice-locked-card';
-        locked.innerHTML = `<svg class="lock-icon" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.2"/></svg><span class="indice-locked-text">Indice ${i+1}</span>`;
+        var locked = document.createElement('div'); locked.className = 'indice-locked-card';
+        var lockSvg = '<svg class="lock-icon" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.2"/></svg>';
+        var lockTxt = document.createElement('span'); lockTxt.className = 'indice-locked-text'; lockTxt.textContent = 'Indice ' + (i+1);
+        locked.innerHTML = lockSvg;
+        locked.appendChild(lockTxt);
         container.appendChild(locked);
       }
     });
+    mettreAJourConstantes();
   }
 
-// autocomplete et liste
   function normalise(str) {
     return str.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
   }
 
   function showDropdown(items) {
-    const dd = document.getElementById('dropdown');
+    var dd = el('dropdown');
     if (!items.length) { dd.style.display='none'; return; }
     dd.innerHTML = '';
-    items.forEach(item => {
-      const el = document.createElement('div');
-      el.className = 'dropdown-item';
-      el.textContent = item;
-      el.addEventListener('mousedown', e => {
+    items.forEach(function(item) {
+      var div = document.createElement('div'); div.className = 'dropdown-item'; div.textContent = item;
+      div.addEventListener('mousedown', function(e) {
         e.preventDefault();
-        document.getElementById('diag-input').value = item;
+        el('diag-input').value = item;
         dd.style.display = 'none';
       });
-      dd.appendChild(el);
+      dd.appendChild(div);
     });
     dd.style.display = 'block';
   }
 
-
   function buildEmoji(succes) {
-    return Array.from({length:MAX_ESSAIS}, (_,i) =>
-      i < essaiActuel ? '❌' : (i === essaiActuel && succes ? '✅' : '💡')
-    ).join('');
+    var result = '';
+    for (var i = 0; i < MAX_ESSAIS; i++) {
+      if (i < essaiActuel) result += '🟥';
+      else if (i === essaiActuel && succes) result += '🟩';
+      else result += '⬜';
+    }
+    return result;
+  }
+
+  function afficherDejaJoue(session) {
+    el('tries-row').style.display = 'none';
+    el('indices-container').style.display = 'none';
+    el('constantes-zone').style.display = 'none';
+    el('input-zone').style.display = 'none';
+    var emoji = session.emoji || '';
+    var zone = el('result-zone');
+    var banner = document.createElement('div'); banner.className = 'deja-joue';
+    var h2 = document.createElement('h2'); h2.textContent = session.succes ? 'Bravo !' : 'Rate hier';
+    var emojiDiv = document.createElement('div'); emojiDiv.className = 'result-emoji'; emojiDiv.style.margin = '10px 0'; emojiDiv.textContent = emoji;
+    var p1 = document.createElement('p');
+    p1.innerHTML = session.succes
+      ? 'Diagnostic trouve en ' + session.essais + ' essai' + (session.essais>1?'s':'') + ' &mdash; <strong>' + session.diagnostic + '</strong>'
+      : 'Le diagnostic etait : <strong>' + session.diagnostic + '</strong>';
+    var p2 = document.createElement('p'); p2.textContent = 'Vous avez deja joue aujourd\'hui.';
+    var cdBlock = document.createElement('div'); cdBlock.className = 'countdown-block';
+    var cdLabel = document.createElement('div'); cdLabel.className = 'countdown-label'; cdLabel.textContent = 'Prochain cas dans';
+    var cdTime = document.createElement('div'); cdTime.className = 'countdown-time'; cdTime.id = 'countdown-time'; cdTime.textContent = '--:--:--';
+    cdBlock.appendChild(cdLabel); cdBlock.appendChild(cdTime);
+    var actions = document.createElement('div'); actions.className = 'result-actions';
+    var btnP = document.createElement('button'); btnP.className = 'btn-partager'; btnP.textContent = 'Partager mon resultat';
+    btnP.addEventListener('click', function() {
+      navigator.clipboard.writeText('Diagnostick — ' + getDateLabel() + '\n' + emoji + '\nhttps://syssans.github.io/Diagnostick/').catch(function(){});
+      confirm.style.display = 'block';
+    });
+    var lnk = document.createElement('a'); lnk.className = 'btn-archives-link'; lnk.href = './archives.html'; lnk.textContent = 'Voir les archives';
+    var confirm = document.createElement('div'); confirm.className = 'share-confirm'; confirm.style.display = 'none'; confirm.textContent = 'Copie !';
+    actions.appendChild(btnP); actions.appendChild(lnk);
+    banner.appendChild(h2); banner.appendChild(emojiDiv); banner.appendChild(p1); banner.appendChild(p2);
+    banner.appendChild(cdBlock); banner.appendChild(actions); banner.appendChild(confirm);
+    zone.innerHTML = ''; zone.appendChild(banner);
+    startCountdown();
+  }
+
+  function startCountdown() {
+    function tick() {
+      var e = el('countdown-time');
+      if (!e) { clearInterval(countdownInterval); return; }
+      e.textContent = formatCountdown(secondsUntilMidnight());
+    }
+    tick();
+    countdownInterval = setInterval(tick, 1000);
   }
 
   function terminer(succes) {
     termine = true;
-    const emoji = buildEmoji(succes);
-
-    saveSession({ succes, diagnostic: CAS.diagnostic, essais: essaiActuel + 1, emoji });
+    var emoji = buildEmoji(succes);
+    saveSession({ date:getTodayKey(), succes:succes, diagnostic:CAS.diagnostic, essais:essaiActuel+1, emoji:emoji });
     updateStats(succes);
-
-    document.getElementById('input-zone').style.display = 'none';
-    const dots = document.querySelectorAll('.try-dot');
-    if (succes && dots[essaiActuel]) {
-      dots[essaiActuel].classList.remove('current');
-      dots[essaiActuel].classList.add('correct');
-    }
+    el('input-zone').style.display = 'none';
+    var dots = document.querySelectorAll('.try-dot');
+    if (succes && dots[essaiActuel]) { dots[essaiActuel].classList.remove('current'); dots[essaiActuel].classList.add('correct'); }
     indicesVisibles = CAS.indices.length;
     renderIndices();
+    mettreAJourConstantes();
 
-    document.getElementById('result-zone').innerHTML = `
-      <div class="result-banner">
-        <h2>${succes ? 'Bravo !' : 'Raté pour aujourd\'hui'}</h2>
-        <div class="result-emoji">${emoji}</div>
-        <p>${succes
-          ? `Trouvé en ${essaiActuel+1} essai${essaiActuel>0?'s':''} — <strong>${CAS.diagnostic}</strong>`
-          : `Le diagnostic était : <strong>${CAS.diagnostic}</strong>`
-        }</p>
-        <div class="countdown-block">
-          <div class="countdown-label">Prochain cas dans</div>
-          <div class="countdown-time" id="countdown-time">--:--:--</div>
-        </div>
-        <div class="result-actions">
-          <button class="btn-partager" id="btn-partager">Partager mon résultat</button>
-          <a class="btn-archives-link" href="./archives.html">Voir les archives</a>
-        </div>
-        <div class="share-confirm" id="share-confirm" style="display:none;">Copié !</div>
-      </div>`;
-
-    document.getElementById('btn-partager').addEventListener('click', () => {
-      navigator.clipboard.writeText(`Diagnostick — ${getDateLabel()}\n${emoji}\nhttps://syssans.github.io/Diagnostick/`).catch(()=>{});
-      document.getElementById('share-confirm').style.display = 'block';
+    var zone = el('result-zone');
+    var banner = document.createElement('div'); banner.className = 'result-banner';
+    var h2 = document.createElement('h2'); h2.textContent = succes ? 'Bravo !' : 'Rate pour aujourd\'hui';
+    var emojiDiv = document.createElement('div'); emojiDiv.className = 'result-emoji'; emojiDiv.textContent = emoji;
+    var p = document.createElement('p');
+    p.innerHTML = succes
+      ? 'Trouve en ' + (essaiActuel+1) + ' essai' + (essaiActuel>0?'s':'') + ' &mdash; <strong>' + CAS.diagnostic + '</strong>'
+      : 'Le diagnostic etait : <strong>' + CAS.diagnostic + '</strong>';
+    var cdBlock = document.createElement('div'); cdBlock.className = 'countdown-block';
+    var cdLabel = document.createElement('div'); cdLabel.className = 'countdown-label'; cdLabel.textContent = 'Prochain cas dans';
+    var cdTime = document.createElement('div'); cdTime.className = 'countdown-time'; cdTime.id = 'countdown-time'; cdTime.textContent = '--:--:--';
+    cdBlock.appendChild(cdLabel); cdBlock.appendChild(cdTime);
+    var actions = document.createElement('div'); actions.className = 'result-actions';
+    var btnP = document.createElement('button'); btnP.className = 'btn-partager'; btnP.textContent = 'Partager mon resultat';
+    var confirm = document.createElement('div'); confirm.className = 'share-confirm'; confirm.style.display = 'none'; confirm.textContent = 'Copie !';
+    btnP.addEventListener('click', function() {
+      navigator.clipboard.writeText('Diagnostick — ' + getDateLabel() + '\n' + emoji + '\nhttps://syssans.github.io/Diagnostick/').catch(function(){});
+      confirm.style.display = 'block';
     });
-
+    var lnk = document.createElement('a'); lnk.className = 'btn-archives-link'; lnk.href = './archives.html'; lnk.textContent = 'Voir les archives';
+    actions.appendChild(btnP); actions.appendChild(lnk);
+    banner.appendChild(h2); banner.appendChild(emojiDiv); banner.appendChild(p);
+    banner.appendChild(cdBlock); banner.appendChild(actions); banner.appendChild(confirm);
+    zone.innerHTML = ''; zone.appendChild(banner);
     startCountdown();
   }
 
   function valider() {
     if (termine) return;
-    const val = document.getElementById('diag-input').value.trim();
+    var val = el('diag-input').value.trim();
     if (!val) return;
-    document.getElementById('dropdown').style.display = 'none';
-    const fb = document.getElementById('feedback');
+    el('dropdown').style.display = 'none';
+    var fb = el('feedback');
     if (normalise(val) === normalise(CAS.diagnostic)) {
-      fb.innerHTML = `<div class="feedback correct">Exact — <strong>${CAS.diagnostic}</strong>.</div>`;
+      fb.innerHTML = '<div class="feedback correct">Exact &mdash; <strong>' + CAS.diagnostic + '</strong>.</div>';
       terminer(true); return;
     }
-    fb.innerHTML = `<div class="feedback wrong">Ce n'est pas le bon diagnostic.</div>`;
-    document.getElementById('diag-input').value = '';
+    fb.innerHTML = '<div class="feedback wrong">Ce n\'est pas le bon diagnostic.</div>';
+    el('diag-input').value = '';
     essaiActuel++;
     if (essaiActuel >= MAX_ESSAIS) { terminer(false); return; }
     if (indicesVisibles < CAS.indices.length) indicesVisibles++;
@@ -509,34 +537,28 @@
 
   function passer() {
     if (termine) return;
-    document.getElementById('feedback').innerHTML = `<div class="feedback reveal">Indice suivant</div>`;
-    document.getElementById('diag-input').value = '';
-    document.getElementById('dropdown').style.display = 'none';
+    el('feedback').innerHTML = '<div class="feedback reveal">Indice suivant</div>';
+    el('diag-input').value = '';
+    el('dropdown').style.display = 'none';
     essaiActuel++;
     if (essaiActuel >= MAX_ESSAIS) { terminer(false); return; }
     if (indicesVisibles < CAS.indices.length) indicesVisibles++;
     renderTries(); renderIndices();
   }
 
+  el('date-label').textContent = getDateLabel();
 
-
-
-
-
-
-  document.getElementById('date-label').textContent = getDateLabel();
-
-  document.getElementById('diag-input').addEventListener('input', e => {
-    const q = normalise(e.target.value);
-    if (q.length < 2) { document.getElementById('dropdown').style.display='none'; return; }
-    showDropdown(DIAGNOSTICS.filter(d => normalise(d).includes(q)).slice(0,7));
+  el('diag-input').addEventListener('input', function(e) {
+    var q = normalise(e.target.value);
+    if (q.length < 2) { el('dropdown').style.display='none'; return; }
+    showDropdown(DIAGNOSTICS.filter(function(d){return normalise(d).includes(q);}).slice(0,7));
   });
-  document.getElementById('diag-input').addEventListener('blur', () => {
-    setTimeout(() => { document.getElementById('dropdown').style.display='none'; }, 150);
+  el('diag-input').addEventListener('blur', function() {
+    setTimeout(function(){ el('dropdown').style.display='none'; }, 150);
   });
-  document.getElementById('diag-input').addEventListener('keydown', e => { if (e.key==='Enter') valider(); });
-  document.getElementById('btn-valider').addEventListener('click', valider);
-  document.getElementById('btn-passer').addEventListener('click', passer);
+  el('diag-input').addEventListener('keydown', function(e) { if(e.key==='Enter') valider(); });
+  el('btn-valider').addEventListener('click', valider);
+  el('btn-passer').addEventListener('click', passer);
 
   renderStats();
   chargerCas();
