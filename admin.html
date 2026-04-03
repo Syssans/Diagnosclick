@@ -333,7 +333,7 @@ body {
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">Diagnostick</div>
-    <h1 class="login-title">Admin</h1>
+    <h1 class="login-title">Administration</h1>
     <p class="login-sub">Accès réservé</p>
 
 ```
@@ -523,7 +523,7 @@ body {
 block.querySelector('.btn-remove-indice')?.addEventListener('click', () => {
   block.remove();
   indiceCount--;
-  renuméroterIndices();
+  reordonnerIndices();
   document.getElementById('btn-add-indice').style.display = indiceCount >= 6 ? 'none' : 'block';
 });
 
@@ -533,7 +533,7 @@ document.getElementById('btn-add-indice').style.display = indiceCount >= 6 ? 'no
 
 }
 
-function renuméroterIndices() {
+function reordonnerIndices() {
 document.querySelectorAll(’.indice-block’).forEach((block, i) => {
 const n = i + 1;
 block.dataset.n = n;
