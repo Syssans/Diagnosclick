@@ -76,7 +76,7 @@
     .lock-icon { width:12px; height:12px; opacity:0.3; flex-shrink:0; }
 
     .constantes-zone { margin-bottom:1.25rem; }
-    .btn-constantes { width:100%; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--bg-secondary); border:0.5px solid var(--border-subtle); border-radius:var(--radius-md); font-size:13px; color:var(--text-secondary); cursor:pointer; font-family:inherit; transition:all 0.15s; }
+    .btn-constantes { width:100%; display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--green-bg); border:0.5px solid var(--green); border-radius:var(--radius-md); font-size:13px; color:var(--green-light); cursor:pointer; font-family:inherit; transition:all 0.15s; }
     .btn-constantes:not([disabled]):hover { border-color:var(--border-mid); color:var(--text-primary); }
     .btn-constantes[disabled] { opacity:0.4; cursor:not-allowed; }
     .btn-constantes-left { display:flex; align-items:center; gap:8px; }
@@ -139,11 +139,11 @@
     <h1>Diagnostick</h1>
     <p class="header-sub"><span id="date-label"></span></p>
     <div class="header-nav"><a href="./archives.html">Archives</a></div>
-    <!div class="header-stats">
-      <!div class="stat"><div class="stat-value" id="stat-joues">0</div><div class="stat-label">Joués</div></div>
-      <!div class="stat"><div class="stat-value" id="stat-reussis">0%</div><div class="stat-label">Réussite</div></div>
-      <!div class="stat"><div class="stat-value" id="stat-streak">0</div><div class="stat-label">Série</div></div>
-    <!/div>
+    <div class="header-stats">
+      <div class="stat"><div class="stat-value" id="stat-joues">0</div><div class="stat-label">Joués</div></div>
+      <div class="stat"><div class="stat-value" id="stat-reussis">0%</div><div class="stat-label">Réussite</div></div>
+      <div class="stat"><div class="stat-value" id="stat-streak">0</div><div class="stat-label">Série</div></div>
+    </div>
   </div>
 
   <div id="game-container">
@@ -154,7 +154,7 @@
       <button class="btn-constantes" id="btn-constantes" disabled>
         <span class="btn-constantes-left">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><rect x="1" y="10" width="14" height="5" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 10V6a4 4 0 018 0v4" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="13" r="1" fill="currentColor"/></svg>
-          <span id="constantes-btn-label">Constantes disponibles &agrave; l'indice <span id="constantes-seuil"></span></span>
+          <span id="constantes-btn-label">Constantes disponibles à l'indice <span id="constantes-seuil"></span></span>
         </span>
         <span class="constantes-chevron" id="constantes-chevron">&#9660;</span>
       </button>
@@ -176,7 +176,7 @@
   </div>
 
   <div class="footer">
-    <p><i>Diagnostick ne se substitue en aucun cas à un avis médical professionnel.</i></p>    <p style="margin-top:6px;"><a href="https://github.com/syssans" target="_blank">@Syssans</a></p>
+    <p><i>Diagnostick ne se substitue en aucun cas à un avis médical professionnel.</i></p>    <p style="margin-top:6px;"><a href="https://x.com/syssans" target="_blank">@Syssans</a></p>
   </div>
 </div>
 
