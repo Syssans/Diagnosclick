@@ -248,11 +248,7 @@
 
 <script>
   let ALL_DATA = [];
-  var DIAGNOSTICS = [
-    "Embolie pulmonaire","Pneumothorax spontane","Pneumonie franche lobaire aigue",
-    "Pleuresia","Angor instable","Epanchement pericardique","Exacerbation de BPCO",
-    "Crise d'asthme","Pneumopathie interstitielle"
-  ];
+  let DIAGNOSTICS = [];
   let CONFIG = { start_date: '2026-04-02', start_index: 0 };
 
   function joursDepuis(dateStr) {
@@ -294,8 +290,7 @@
       ]);
       ALL_DATA = await resData.json();
       CONFIG = await resConfig.json();
-      data.forEach(function(c){ if(DIAGNOSTICS.indexOf(c.diagnostic)===-1) DIAGNOSTICS.push(c.diagnostic); });
-
+      DIAGNOSTICS = ALL_DATA.map(c => c.diagnostic);
     } catch {
       ALL_DATA = [];
     }
