@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archives — Diagnosclick</title>
+  <link rel="stylesheet" href="../style/style.css" />
+  <style>
+    #app { max-width:800px; margin:0 auto; padding:2rem 1rem 3rem; }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <h1>Diagnosclick</h1>
+    <p class="header-sub">Archives</p>
+    <div class="header-nav">
+      <a href="../">Cas du jour</a>
+    </div>
+  </div>
+
+  <div id="archive-list-container"></div>
+
+  <div class="footer">
+    <p><i>Diagnosclick ne se substitue en aucun cas à un avis médical professionnel.</i></p>
+    <p style="margin-top:6px;"><a href="https://x.com/syssans" target="_blank">@Syssans</a></p>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightbox-close">&#215;</button>
+  <img id="lightbox-img" src="" alt="Imagerie agrandie" />
+</div>
+
+<!-- MODALE JEU -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title"></span>
+      <button class="modal-close" id="modal-close">&#215;</button>
+    </div>
+    <p class="modal-meta" id="modal-meta"></p>
+    <div class="tries" id="modal-tries"></div>
+    <div class="indices" id="modal-indices"></div>
+
+    <div class="constantes-zone" id="modal-constantes-zone" style="display:none;">
+      <button class="btn-constantes" id="modal-btn-constantes" disabled>
+        <span class="btn-constantes-left">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+        <path d="M2 12 L5 12 L7 7 L9 17 L11 10 L13 14 L15 12 L22 12"
+              stroke="#ef4444" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>          <span id="modal-constantes-label">Constantes</span>
+        </span>
+        <span class="constantes-chevron" id="modal-constantes-chevron">&#9660;</span>
+      </button>
+      <div class="constantes-panel" id="modal-constantes-panel">
+        <table class="constantes-table" id="modal-constantes-table"></table>
+      </div>
+    </div>
+
+    <div class="input-zone" id="modal-input-zone">
+      <div class="input-row">
+        <input class="diag-input" id="modal-diag-input" type="text" placeholder="Votre diagnostic ?" autocomplete="off" />
+        <button class="btn-passer" id="modal-btn-passer">Passer</button>
+        <button class="btn-valider" id="modal-btn-valider">Valider</button>
+      </div>
+      <div class="dropdown" id="modal-dropdown" style="display:none;"></div>
+      <div id="modal-feedback"></div>
+    </div>
+    <div id="modal-result"></div>
+  </div>
+</div>
+
+<script>
+  var DIAGNOSTICS_BASE = [
+    "Embolie pulmonaire","Pneumothorax spontane","Pneumonie franche lobaire aigue",
+    "Pleuresia","Angor instable","Epanchement pericardique","Exacerbation de BPCO",
+    "Crise d'asthme","Pneumopathie interstitielle"
+  ];
+  var DIAGNOSTICS = DIAGNOSTICS_BASE.slice();
+
+  var ALL_DATA = [];
+  var CONFIG = { start_date: '2026-04-02', start_index: 0 };
+  var modalState = { cas:null, essais:0, indices:1, termine:false };
+
+  function el(id) { return document.getElementById(id); }
+  function normalise(str) { return str.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+
+  function joursDepuis(dateStr) {
+    var start = new Date(dateStr); start.setHours(0,0,0,0);
+    var today = new Date(); today.setHours(0,0,0,0);
+    return Math.floor((today - start) / 86400000);
+  }
+
+  function getTodayIndex() {
+    var offset = joursDepuis(CONFIG.start_date);
+    return (CONFIG.start_index + offset) % ALL_DATA.length;
+  }
+
+  function getDateForIndex(index) {
+    var offset = joursDepuis(CONFIG.start_date);
+    var todayIndex = (CONFIG.start_index + offset) % ALL_DATA.length;
+    var diff = index - todayIndex;
+    if (diff > 0) diff -= ALL_DATA.length;
+    var d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() + diff);
+    return d;
+  }
+
+  function formatDate(d) {
+    return d.toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+  }
+
+  function getSpClass(sp) {
+    var map = { cardiologie:'sp-cardiologie', urgences:'sp-urgences', pneumologie:'sp-pneumologie', neurologie:'sp-neurologie', 'medecine-interne':'sp-medecine-interne' };
+    return map[sp] || 'sp-cardiologie';
+  }
+
+  async function charger() {
+    try {
+      var results = await Promise.all([
+        fetch('../diagnosclick_database.json').then(function(r){return r.json();}),
+        fetch('../config.json').then(function(r){return r.json();})
+      ]);
+      ALL_DATA = results[0];
+      CONFIG = results[1];
+      ALL_DATA.forEach(function(c){ if(DIAGNOSTICS.indexOf(c.diagnostic)===-1) DIAGNOSTICS.push(c.diagnostic); });
+    } catch(e) { ALL_DATA = []; }
+    renderArchives();
+  }
+
+  function transformerCas(raw) {
+    return {
+      diagnostic: raw.diagnostic,
+      specialite: raw.specialite || 'cardiologie',
+      difficulte: raw.difficulte || 1,
+      constantes: raw.constantes || null,
+      indices: raw.indices.slice().sort(function(a,b){return a.ordre-b.ordre;}).map(function(ind){
+        return { type:ind.type, text:ind.texte, hasImage:ind.image!==null, imageSrc:ind.image||null };
+      })
+    };
+  }
+
+  function renderArchives() {
+    var container = el('archive-list-container');
+    if (!ALL_DATA.length) {
+      container.innerHTML = '<div style="text-align:center;padding:3rem 1rem;color:var(--text-tertiary);font-size:14px;">Aucun cas disponible.</div>';
+      return;
+    }
+    var offset = joursDepuis(CONFIG.start_date);
+    var passes = [];
+    for (var jour = 0; jour < offset; jour++) {
+      var index = (CONFIG.start_index + jour) % ALL_DATA.length;
+      var date = new Date(CONFIG.start_date);
+      date.setDate(date.getDate() + jour);
+      passes.push({ index:index, date:date, cas:transformerCas(ALL_DATA[index]) });
+    }
+    passes.sort(function(a,b){ return b.date - a.date; });
+
+    if (!passes.length) {
+      container.innerHTML = '<div style="text-align:center;padding:3rem 1rem;color:var(--text-tertiary);font-size:14px;">Les archives apparaîtront ici dès demain.</div>';
+      return;
+    }
+
+    var grid = document.createElement('div');
+    grid.className = 'archive-grid';
+
+    passes.forEach(function(item, idx) {
+      var card = document.createElement('div');
+      card.className = 'archive-card';
+
+      var numEl = document.createElement('div');
+      numEl.className = 'archive-diagnostic';
+      numEl.textContent = 'Cas #' + (passes.length - idx);
+
+      var dateEl = document.createElement('div');
+      dateEl.className = 'archive-date';
+      dateEl.textContent = formatDate(item.date);
+
+      card.appendChild(numEl); card.appendChild(dateEl);
+      card.addEventListener('click', function(cas, date) { return function() { ouvrirModal(cas, date, (passes.length - idx)); }; }(item.cas, item.date));
+      grid.appendChild(card);
+    });
+
+    container.innerHTML = '';
+    container.appendChild(grid);
+  }
+
+  // ── LIGHTBOX ──
+  function ouvrirLightbox(src) {
+    el('lightbox-img').src = src;
+    el('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function fermerLightbox() { el('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+  el('lightbox-close').addEventListener('click', fermerLightbox);
+  el('lightbox').addEventListener('click', function(e) { if(e.target===this) fermerLightbox(); });
+
+  // ── MODALE ──
+  function ouvrirModal(cas, date, idx) {
+    modalState = { cas:cas, essais:0, indices:1, termine:false };
+    el('modal-title').textContent = 'Cas #' + idx;
+    el('modal-meta').textContent = formatDate(date);
+    el('modal-overlay').classList.add('open');
+    el('modal-input-zone').style.display = 'block';
+    el('modal-result').innerHTML = '';
+    el('modal-feedback').innerHTML = '';
+    el('modal-diag-input').value = '';
+    el('modal-constantes-panel').classList.remove('open');
+    el('modal-constantes-chevron').classList.remove('open');
+    document.body.style.overflow = 'hidden';
+    renderModalTries(); renderModalIndices(); mettreAJourConstantesModal();
+  }
+
+  function fermerModal() { el('modal-overlay').classList.remove('open'); document.body.style.overflow = ''; }
+  el('modal-close').addEventListener('click', fermerModal);
+  el('modal-overlay').addEventListener('click', function(e) { if(e.target===this) fermerModal(); });
+  document.addEventListener('keydown', function(e) { if(e.key==='Escape') { fermerModal(); fermerLightbox(); } });
+
+  function getTag(type) {
+    return ({anamnese:{cls:'tag-anamnese',label:'Anamnèse'},clinique:{cls:'tag-clinique',label:'Clinique'},paraclinique:{cls:'tag-paraclinique',label:'Paraclinique'},image:{cls:'tag-image',label:'Imagerie'}})[type] || {cls:'tag-anamnese',label:type};
+  }
+
+  function renderModalTries() {
+    var row = el('modal-tries'); row.innerHTML = '';
+    for (var i = 0; i < 6; i++) {
+      var dot = document.createElement('div');
+      dot.className = 'try-dot' + (i < modalState.essais ? ' used' : i === modalState.essais ? ' current' : '');
+      dot.textContent = i+1; row.appendChild(dot);
+    }
+  }
+
+  function renderModalIndices() {
+    var container = el('modal-indices'); container.innerHTML = '';
+    modalState.cas.indices.forEach(function(ind, i) {
+      if (i < modalState.indices) {
+        var tag = getTag(ind.type);
+        var card = document.createElement('div'); card.className = 'indice-card';
+        var header = document.createElement('div'); header.className = 'indice-header';
+        var tagEl = document.createElement('span'); tagEl.className = 'indice-tag ' + tag.cls; tagEl.textContent = tag.label;
+        var numEl = document.createElement('span'); numEl.className = 'indice-num'; numEl.textContent = 'Indice ' + (i+1);
+        header.appendChild(tagEl); header.appendChild(numEl);
+        var textEl = document.createElement('div'); textEl.className = 'indice-text'; textEl.textContent = ind.text;
+        card.appendChild(header); card.appendChild(textEl);
+        if (ind.hasImage) {
+          var imgDiv = document.createElement('div'); imgDiv.className = 'indice-image';
+          if (ind.imageSrc) {
+            var img = document.createElement('img'); img.src = './images/' + ind.imageSrc; img.alt = 'Imagerie';
+            var hint = document.createElement('span'); hint.className = 'indice-image-hint'; hint.textContent = 'Appuyer pour agrandir';
+            imgDiv.appendChild(img); imgDiv.appendChild(hint);
+            imgDiv.addEventListener('click', function(src){ return function(){ ouvrirLightbox('./images/' + src); }; }(ind.imageSrc));
+          } else {
+            var sp = document.createElement('span'); sp.className = 'indice-image-placeholder'; sp.textContent = 'Image à venir';
+            imgDiv.appendChild(sp); imgDiv.style.cursor = 'default';
+          }
+          card.appendChild(imgDiv);
+        }
+        container.appendChild(card);
+      } else {
+        var locked = document.createElement('div'); locked.className = 'indice-locked-card';
+        locked.innerHTML = '<svg class="lock-icon" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.2"/></svg>';
+        var lockTxt = document.createElement('span'); lockTxt.className = 'indice-locked-text'; lockTxt.textContent = 'Indice ' + (i+1);
+        locked.appendChild(lockTxt); container.appendChild(locked);
+      }
+    });
+    mettreAJourConstantesModal();
+  }
+
+  function mettreAJourConstantesModal() {
+    if (!modalState.cas.constantes) { el('modal-constantes-zone').style.display='none'; return; }
+    el('modal-constantes-zone').style.display='block';
+    var seuil = modalState.cas.constantes.disponible_a_partir_de;
+    var btn = el('modal-btn-constantes');
+    if (modalState.indices >= seuil || modalState.termine) {
+      btn.disabled = false; el('modal-constantes-label').textContent = 'Constantes';
+    } else {
+      btn.disabled = true; el('modal-constantes-label').textContent = 'Constantes — disponibles à l\'indice ' + seuil;
+    }
+  }
+
+  el('modal-btn-constantes').addEventListener('click', function() {
+    if (this.disabled) return;
+    var panel = el('modal-constantes-panel'), chevron = el('modal-constantes-chevron');
+    if (panel.classList.contains('open')) {
+      panel.classList.remove('open'); chevron.classList.remove('open');
+    } else {
+      var table = el('modal-constantes-table'); table.innerHTML = '';
+      Object.keys(modalState.cas.constantes.valeurs).forEach(function(k) {
+        var tr = document.createElement('tr');
+        var td1 = document.createElement('td'); td1.textContent = k;
+        var td2 = document.createElement('td'); td2.textContent = modalState.cas.constantes.valeurs[k];
+        tr.appendChild(td1); tr.appendChild(td2); table.appendChild(tr);
+      });
+      panel.classList.add('open'); chevron.classList.add('open');
+    }
+  });
+
+  function showModalDropdown(items) {
+    var dd = el('modal-dropdown');
+    if (!items.length) { dd.style.display='none'; return; }
+    dd.innerHTML = '';
+    items.forEach(function(item) {
+      var div = document.createElement('div'); div.className = 'dropdown-item'; div.textContent = item;
+      div.addEventListener('mousedown', function(e) { e.preventDefault(); el('modal-diag-input').value = item; dd.style.display='none'; });
+      dd.appendChild(div);
+    });
+    dd.style.display = 'block';
+  }
+
+  function buildEmoji(essais, succes) {
+    var r = '';
+    for (var i = 0; i < 6; i++) r += (i < essais ? '🟥' : (i === essais && succes ? '🟩' : '⬜'));
+    return r;
+  }
+
+  function terminerModal(succes) {
+    modalState.termine = true;
+    el('modal-input-zone').style.display = 'none';
+    var dots = el('modal-tries').querySelectorAll('.try-dot');
+    if (succes && dots[modalState.essais]) { dots[modalState.essais].classList.remove('current'); dots[modalState.essais].classList.add('correct'); }
+    modalState.indices = modalState.cas.indices.length;
+    renderModalIndices();
+    var emoji = buildEmoji(modalState.essais, succes);
+    el('modal-result').innerHTML = '<div class="result-banner"><h2>' + (succes?'Bravo !':'Raté') + '</h2><div class="result-emoji">' + emoji + '</div><p>' + (succes ? 'Trouvé en ' + (modalState.essais+1) + ' essai' + (modalState.essais>0?'s':'') + ' — <strong>' + modalState.cas.diagnostic + '</strong>' : 'Le diagnostic était : <strong>' + modalState.cas.diagnostic + '</strong>') + '</p></div>';
+  }
+
+  function validerModal() {
+    if (modalState.termine) return;
+    var val = el('modal-diag-input').value.trim(); if (!val) return;
+    el('modal-dropdown').style.display = 'none';
+    if (normalise(val) === normalise(modalState.cas.diagnostic)) {
+      el('modal-feedback').innerHTML = '<div class="feedback correct">Exact — <strong>' + modalState.cas.diagnostic + '</strong>.</div>';
+      terminerModal(true); return;
+    }
+    el('modal-feedback').innerHTML = '<div class="feedback wrong">Ce n\'est pas le bon diagnostic.</div>';
+    el('modal-diag-input').value = ''; modalState.essais++;
+    if (modalState.essais >= 6) { terminerModal(false); return; }
+    if (modalState.indices < modalState.cas.indices.length) modalState.indices++;
+    renderModalTries(); renderModalIndices();
+  }
+
+  function passerModal() {
+    if (modalState.termine) return;
+    el('modal-feedback').innerHTML = '<div class="feedback reveal">Indice suivant</div>';
+    el('modal-diag-input').value = ''; el('modal-dropdown').style.display = 'none'; modalState.essais++;
+    if (modalState.essais >= 6) { terminerModal(false); return; }
+    if (modalState.indices < modalState.cas.indices.length) modalState.indices++;
+    renderModalTries(); renderModalIndices();
+  }
+
+  el('modal-btn-valider').addEventListener('click', validerModal);
+  el('modal-btn-passer').addEventListener('click', passerModal);
+  el('modal-diag-input').addEventListener('input', function(e) {
+    var q = normalise(e.target.value);
+    if (q.length < 2) { el('modal-dropdown').style.display='none'; return; }
+    showModalDropdown(DIAGNOSTICS.filter(function(d){return normalise(d).includes(q);}).slice(0,7));
+  });
+  el('modal-diag-input').addEventListener('blur', function() { setTimeout(function(){el('modal-dropdown').style.display='none';},150); });
+  el('modal-diag-input').addEventListener('keydown', function(e) { if(e.key==='Enter') validerModal(); });
+
+  charger();
+</script>
+</body>
+</html>
