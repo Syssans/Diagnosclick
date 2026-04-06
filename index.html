@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Diagnostick</title>
+  <title>Diagnosclick</title>
   <meta name="description" content="Trouvez le diagnostic medical en 6 indices. Un nouveau cas chaque jour." />
   <link rel="stylesheet" href="./style.css" />
   <style>
@@ -14,7 +14,7 @@
 
 <div id="app">
   <div class="header">
-    <h1>Diagnostick</h1>
+    <h1>Diagnosclick</h1>
     <p class="header-sub"><span id="date-label"></span></p>
     <div class="header-nav">
       <a href="./archives.html">Archives</a>
@@ -47,7 +47,7 @@
 
     <div class="input-zone" id="input-zone">
       <div class="input-row">
-        <input class="diag-input" id="diag-input" type="text" placeholder="Entrez un diagnostic..." autocomplete="off" />
+        <input class="diag-input" id="diag-input" type="text" placeholder="Votre diagnostic ?" autocomplete="off" />
         <button class="btn-passer" id="btn-passer">Passer</button>
         <button class="btn-valider" id="btn-valider">Valider</button>
       </div>
@@ -58,7 +58,7 @@
   </div>
 
   <div class="footer">
-    <p><i>Diagnostick ne se substitue en aucun cas à un avis médical professionnel.</i></p>
+    <p><i>Diagnosclick ne se substitue en aucun cas à un avis médical professionnel.</i></p>
     <p style="margin-top:6px;"><a href="https://x.com/syssans" target="_blank">@Syssans</a></p>
   </div>
 </div>
@@ -82,8 +82,8 @@
   var termine = false;
   var countdownInterval = null;
   var MAX_ESSAIS = 6;
-  var KEY_STATS   = 'diagnostick_stats';
-  var KEY_SESSION = 'diagnostick_session';
+  var KEY_STATS   = 'diagnosclick_stats';
+  var KEY_SESSION = 'diagnosclick_session';
 
   function el(id) { return document.getElementById(id); }
 
@@ -157,7 +157,7 @@
 
   function chargerCas() {
     Promise.all([
-      fetch('./diagnostick_database.json').then(function(r){return r.json();}),
+      fetch('./diagnosclick_database.json').then(function(r){return r.json();}),
       fetch('./config.json').then(function(r){return r.json();})
     ]).then(function(results) {
       var data = results[0], config = results[1];
@@ -312,7 +312,7 @@
     var actions = document.createElement('div'); actions.className = 'result-actions';
     var confirm = document.createElement('div'); confirm.className = 'share-confirm'; confirm.style.display='none'; confirm.textContent = 'Copié !';
     var btnP = document.createElement('button'); btnP.className = 'btn-partager'; btnP.textContent = 'Partager';
-    btnP.addEventListener('click', function() { navigator.clipboard.writeText('Diagnostick — ' + getDateLabel() + '\n' + emoji + '\nhttps://syssans.github.io/Diagnostick/').catch(function(){}); confirm.style.display='block'; });
+    btnP.addEventListener('click', function() { navigator.clipboard.writeText('Diagnosclick — ' + getDateLabel() + '\n' + emoji + '\nhttps://syssans.github.io/Diagnosclick/').catch(function(){}); confirm.style.display='block'; });
     var lnk = document.createElement('a'); lnk.className = 'btn-archives-link'; lnk.href = './archives.html'; lnk.textContent = 'Voir les archives';
     actions.appendChild(btnP); actions.appendChild(lnk);
     banner.appendChild(h2); banner.appendChild(emojiDiv); banner.appendChild(p1); banner.appendChild(p2); banner.appendChild(cdBlock); banner.appendChild(actions); banner.appendChild(confirm);
@@ -347,7 +347,7 @@
     var actions = document.createElement('div'); actions.className = 'result-actions';
     var confirm = document.createElement('div'); confirm.className = 'share-confirm'; confirm.style.display='none'; confirm.textContent = 'Copié !';
     var btnP = document.createElement('button'); btnP.className = 'btn-partager'; btnP.textContent = 'Partager';
-    btnP.addEventListener('click', function() { navigator.clipboard.writeText('Diagnostick — ' + getDateLabel() + '\n' + emoji + '\nhttps://syssans.github.io/Diagnostick/').catch(function(){}); confirm.style.display='block'; });
+    btnP.addEventListener('click', function() { navigator.clipboard.writeText('Diagnosclick — ' + getDateLabel() + '\n' + emoji + '\nhttps://syssans.github.io/Diagnosclick/').catch(function(){}); confirm.style.display='block'; });
     var lnk = document.createElement('a'); lnk.className = 'btn-archives-link'; lnk.href = './archives.html'; lnk.textContent = 'Voir les archives';
     actions.appendChild(btnP); actions.appendChild(lnk);
     banner.appendChild(h2); banner.appendChild(emojiDiv); banner.appendChild(p); banner.appendChild(cdBlock); banner.appendChild(actions); banner.appendChild(confirm);

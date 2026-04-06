@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Archives — Diagnostick</title>
+  <title>Archives — Diagnosclick</title>
   <link rel="stylesheet" href="./style.css" />
   <style>
     #app { max-width:800px; margin:0 auto; padding:2rem 1rem 3rem; }
@@ -12,7 +12,7 @@
 <body>
 <div id="app">
   <div class="header">
-    <h1>Diagnostick</h1>
+    <h1>Diagnosclick</h1>
     <p class="header-sub">Archives</p>
     <div class="header-nav">
       <a href="./index.html">Cas du jour</a>
@@ -22,7 +22,7 @@
   <div id="archive-list-container"></div>
 
   <div class="footer">
-    <p><i>Diagnostick ne se substitue en aucun cas à un avis médical professionnel.</i></p>
+    <p><i>Diagnosclick ne se substitue en aucun cas à un avis médical professionnel.</i></p>
     <p style="margin-top:6px;"><a href="https://x.com/syssans" target="_blank">@Syssans</a></p>
   </div>
 </div>
@@ -61,7 +61,7 @@
 
     <div class="input-zone" id="modal-input-zone">
       <div class="input-row">
-        <input class="diag-input" id="modal-diag-input" type="text" placeholder="Entrez un diagnostic..." autocomplete="off" />
+        <input class="diag-input" id="modal-diag-input" type="text" placeholder="Votre diagnostic ?" autocomplete="off" />
         <button class="btn-passer" id="modal-btn-passer">Passer</button>
         <button class="btn-valider" id="modal-btn-valider">Valider</button>
       </div>
@@ -119,7 +119,7 @@
   async function charger() {
     try {
       var results = await Promise.all([
-        fetch('./diagnostick_database.json').then(function(r){return r.json();}),
+        fetch('./diagnosclick_database.json').then(function(r){return r.json();}),
         fetch('./config.json').then(function(r){return r.json();})
       ]);
       ALL_DATA = results[0];
