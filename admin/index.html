@@ -414,7 +414,10 @@ el('btn-publier').addEventListener('click', function() {
   newData.push(newCas);
 
   var jsonStr = JSON.stringify(newData, null, 2);
-  var content = btoa(unescape(encodeURIComponent(jsonStr)));
+  var bytes = new TextEncoder().encode(jsonStr);
+  var binary = '';
+  bytes.forEach(function(b) { binary += String.fromCharCode(b); });
+  var content = btoa(binary);
 
   el('btn-publier').disabled = true;
   setStatus('load', 'Publication en cours...');
