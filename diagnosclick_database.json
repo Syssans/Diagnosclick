@@ -589,7 +589,7 @@
       }
     }
   },
-    {
+  {
     "id": "gyn-011",
     "specialite": "gynecologie",
     "difficulte": 2,
@@ -688,6 +688,42 @@
         "ordre": 5,
         "type": "anamnese",
         "texte": "Grossesse du troisième trimestre compliquée d’une pré-éclampsie",
+        "image": null
+      }
+    ],
+    "explication": "",
+    "references": []
+  },
+  {
+    "id": "med-013",
+    "specialite": "medecine-interne",
+    "difficulte": 2,
+    "diagnostic": "Test",
+    "constantes": {
+      "disponible_a_partir_de": 1,
+      "valeurs": {
+        "FC": "120 bpm",
+        "Glasgow": "12",
+        "BU": "Nitrites ++ Sang +"
+      }
+    },
+    "indices": [
+      {
+        "ordre": 1,
+        "type": "anamnese",
+        "texte": "Lupus énculé",
+        "image": null
+      },
+      {
+        "ordre": 2,
+        "type": "image",
+        "texte": "Salut c'Marc",
+        "image": null
+      },
+      {
+        "ordre": 3,
+        "type": "paraclinique",
+        "texte": "Je te déteste Marc éééééééééé",
         "image": null
       }
     ],
