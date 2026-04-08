@@ -227,7 +227,11 @@ function charger() {
   .then(function(r) { return r.json(); })
   .then(function(j) {
     sha = j.sha;
-    data = JSON.parse(atob(j.content.replace(/\n/g, '')));
+    var b64 = j.content.replace(/\n/g, '');
+    var bin = atob(b64);
+    var bytes2 = new Uint8Array(bin.length);
+    for (var i2 = 0; i2 < bin.length; i2++) { bytes2[i2] = bin.charCodeAt(i2); }
+    data = JSON.parse(new TextDecoder('utf-8').decode(bytes2));
     el('cas-count').innerHTML = 'Corpus : <b>' + data.length + ' cas</b> — ce cas sera le n&deg;' + (data.length + 1);
   })
   .catch(function() {
