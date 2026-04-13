@@ -55,7 +55,7 @@ body { font-family:'Inter', system-ui, sans-serif; background:var(--bg-primary);
 .stat { text-align:center; }
 .stat-value { font-size:18px; font-weight:600; }
 .stat-label { font-size:11px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.05em; }
-.btn-page { font-size:13px; font-weight:500; padding:8px 18px; border-radius:var(--radius-md); border:2px solid var(--border-mid); background:var(--text-primary); color:var(--bg-primary); cursor:pointer; font-family:inherit; }
+.btn-page { font-size:13px; font-weight:500; padding:8px 18px; border-radius:var(--radius-md); border:2px solid var(--border-mid); background:var(--text-primary); color:var(--bg-primary); cursor:pointer; font-family:inherit; transition: background-color 0.25s cubic-bezier(0.4, 0, 1, 1), opacity 0.25s cubic-bezier(0.4, 0, 1, 1); }
 .btn-page:hover { background:var(--bg-tertiary); }
 
 /* ── FOOTER ───────────────────────────────────────────────────────────────── */
