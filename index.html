@@ -301,7 +301,7 @@
     var emoji = session.emoji || '';
     var zone = el('result-zone');
     var banner = document.createElement('div'); banner.className = 'deja-joue';
-    var h2 = document.createElement('h2'); h2.textContent = session.succes ? 'Bravo !' : 'Raté hier';
+    var h2 = document.createElement('h2'); h2.textContent = session.succes ? 'Bravo !' : 'Raté pour aujourd\'hui';
     var emojiDiv = document.createElement('div'); emojiDiv.className = 'result-emoji'; emojiDiv.style.margin='10px 0'; emojiDiv.textContent = emoji;
     var p1 = document.createElement('p');
     p1.innerHTML = session.succes ? 'Trouvé en ' + session.essais + ' essai' + (session.essais>1?'s':'') + ' — <strong>' + session.diagnostic + '</strong>' : 'Le diagnostic était : <strong>' + session.diagnostic + '</strong>';
@@ -313,8 +313,8 @@
     var actions = document.createElement('div'); actions.className = 'result-actions';
     var confirm = document.createElement('div'); confirm.className = 'share-confirm'; confirm.style.display='none'; confirm.textContent = 'Copié !';
     var btnP = document.createElement('button'); btnP.className = 'btn-partager'; btnP.textContent = 'Partager';
-    btnP.addEventListener('click', function() { navigator.clipboard.writeText('Diagnosclick — ' + getDateLabel() + '\n' + emoji + '\nhttps://syssans.github.io/Diagnosclick/').catch(function(){}); confirm.style.display='block'; });
-    var lnk = document.createElement('a'); lnk.className = 'btn-archives-link'; lnk.href = './archives.html'; lnk.textContent = 'Voir les archives';
+    btnP.addEventListener('click', function() { navigator.clipboard.writeText('Diagnosclick — ' + getDateLabel() + '\n' + emoji + '\nhttps://diagnosclick.com').catch(function(){}); confirm.style.display='block'; });
+    var lnk = document.createElement('a'); lnk.className = 'btn-archives-link'; lnk.href = './archives'; lnk.textContent = 'Voir les archives';
     actions.appendChild(btnP); actions.appendChild(lnk);
     banner.appendChild(h2); banner.appendChild(emojiDiv); banner.appendChild(p1); banner.appendChild(p2); banner.appendChild(cdBlock); banner.appendChild(actions); banner.appendChild(confirm);
     zone.innerHTML = ''; zone.appendChild(banner);
@@ -348,8 +348,8 @@
     var actions = document.createElement('div'); actions.className = 'result-actions';
     var confirm = document.createElement('div'); confirm.className = 'share-confirm'; confirm.style.display='none'; confirm.textContent = 'Copié !';
     var btnP = document.createElement('button'); btnP.className = 'btn-partager'; btnP.textContent = 'Partager';
-    btnP.addEventListener('click', function() { navigator.clipboard.writeText('Diagnosclick — ' + getDateLabel() + '\n' + emoji + '\nhttps://syssans.github.io/Diagnosclick/').catch(function(){}); confirm.style.display='block'; });
-    var lnk = document.createElement('a'); lnk.className = 'btn-archives-link'; lnk.href = './archives.html'; lnk.textContent = 'Voir les archives';
+    btnP.addEventListener('click', function() { navigator.clipboard.writeText('Diagnosclick — ' + getDateLabel() + '\n' + emoji + '\nhttps://diagnosclick.com').catch(function(){}); confirm.style.display='block'; });
+    var lnk = document.createElement('a'); lnk.className = 'btn-archives-link'; lnk.href = './archives'; lnk.textContent = 'Voir les archives';
     actions.appendChild(btnP); actions.appendChild(lnk);
     banner.appendChild(h2); banner.appendChild(emojiDiv); banner.appendChild(p); banner.appendChild(cdBlock); banner.appendChild(actions); banner.appendChild(confirm);
     zone.innerHTML = ''; zone.appendChild(banner);
