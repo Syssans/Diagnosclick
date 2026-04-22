@@ -248,10 +248,10 @@ function creerCarteIndice(ind, i, animer) {
   if (ind.hasImage) {
     var imgDiv = document.createElement('div'); imgDiv.className = 'indice-image';
     if (ind.imageSrc) {
-      var img = document.createElement('img'); img.src = './images/' + ind.imageSrc; img.alt = 'Imagerie';
+      var img = document.createElement('img'); img.src = '../images/' + ind.imageSrc; img.alt = 'Imagerie';
       var hint = document.createElement('span'); hint.className = 'indice-image-hint'; hint.textContent = 'Appuyer pour agrandir';
       imgDiv.appendChild(img); imgDiv.appendChild(hint);
-      imgDiv.addEventListener('click', function() { ouvrirLightbox('./images/' + ind.imageSrc); });
+      imgDiv.addEventListener('click', function() { ouvrirLightbox('../images/' + ind.imageSrc); });
     } else {
       var sp = document.createElement('span'); sp.className = 'indice-image-placeholder'; sp.textContent = 'Image à venir';
       imgDiv.appendChild(sp); imgDiv.style.cursor = 'default';
