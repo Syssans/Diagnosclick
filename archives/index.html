@@ -212,7 +212,7 @@
     el('modal-constantes-panel').classList.remove('open');
     el('modal-constantes-chevron').classList.remove('open');
     document.body.style.overflow = 'hidden';
-    renderModalTries(); renderModalIndices(true); mettreAJourConstantesModal();
+    renderModalTries(); renderModalIndices(false); mettreAJourConstantesModal();
   }
 
   function fermerModal() { el('modal-overlay').classList.remove('open'); document.body.style.overflow = ''; }
