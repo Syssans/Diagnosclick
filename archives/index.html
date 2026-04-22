@@ -212,7 +212,7 @@
     el('modal-constantes-panel').classList.remove('open');
     el('modal-constantes-chevron').classList.remove('open');
     document.body.style.overflow = 'hidden';
-    renderModalTries(); renderModalIndices(); mettreAJourConstantesModal();
+    renderModalTries(); renderModalIndices(false); mettreAJourConstantesModal();
   }
 
   function fermerModal() { el('modal-overlay').classList.remove('open'); document.body.style.overflow = ''; }
@@ -270,19 +270,18 @@ function creerCarteVerrouille(i) {
 }
 
 function renderModalIndices(animerDernier) {
-  if (!CAS) return;
-  var container = el('indices-container');
+  var container = el('modal-indices');
   if (container.children.length === 0) {
-    CAS.indices.forEach(function(ind, i) {
-      container.appendChild(i < indicesVisibles ? creerCarteIndice(ind, i, false) : creerCarteVerrouille(i));
+    modalState.cas.indices.forEach(function(ind, i) {
+      container.appendChild(i < modalState.indices ? creerCarteIndice(ind, i, false) : creerCarteVerrouille(i));
     });
     mettreAJourConstantesModal();
     return;
   }
-  CAS.indices.forEach(function(ind, i) {
+  modalState.cas.indices.forEach(function(ind, i) {
     var existing = container.querySelector('[data-indice="' + i + '"]');
-    if (i < indicesVisibles && existing && existing.classList.contains('indice-locked-card')) {
-      container.replaceChild(creerCarteIndice(ind, i, animerDernier && i === indicesVisibles - 1), existing);
+    if (i < modalState.indices && existing && existing.classList.contains('indice-locked-card')) {
+      container.replaceChild(creerCarteIndice(ind, i, animerDernier && i === modalState.indices - 1), existing);
     }
   });
   mettreAJourConstantesModal();
